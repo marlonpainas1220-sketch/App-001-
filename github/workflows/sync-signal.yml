@@ -1,0 +1,19 @@
+name: Sincronização de Sinal VITRIN III
+on:
+  schedule:
+    - cron: '*/15 * * * *' # Tenta atualizar a cada 15 min
+  workflow_dispatch: # Permite que você clique em um botão para atualizar na hora
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+      - name: Sincronizar Relógio de Sinal
+        run: |
+          echo "Ultima Sincronização: $(date)" > status_sinal.txt
+          git config --global user.name "Vitriniii Bot"
+          git config --global user.email "bot@vitriniii.com"
+          git add status_sinal.txt
+          git commit -m "📡 SINAL ATUALIZADO [SISTEMA SOBERANO]" || exit 0
+          git push
