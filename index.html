@@ -5,60 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Vitrin III</title>
     <style>
-        body { margin: 0; background: #fafafa; font-family: sans-serif; -webkit-tap-highlight-color: transparent; }
-        .nav { height: 70px; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid #eee; }
-        
-        /* O PORTAL SECRETO (A BARRA CINZA) */
-        .portal-trigger { 
-            width: 120px; 
-            height: 35px; 
-            background: #f0f0f0; 
-            border-radius: 20px; 
-            transition: all 0.5s ease;
-        }
-        /* Efeito visual discreto quando você segura */
-        .portal-trigger:active { background: #e0e0e0; transform: scale(0.98); }
-        
-        .content { padding: 30px; text-align: center; color: #333; }
+        body { margin: 0; font-family: -apple-system, sans-serif; background: #fff; overflow: hidden; }
+        .header { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid #eee; }
+        .portal { width: 100px; height: 35px; background: #f5f5f5; border-radius: 20px; transition: 0.5s; }
+        .portal:active { background: #e0e0e0; }
+        .hero { padding: 50px 20px; text-align: center; }
     </style>
 </head>
 <body>
-
-    <div class="nav">
+    <div class="header">
         <div style="font-weight: 900; letter-spacing: 1px;">VITRIN III</div>
-        <div class="portal-trigger" id="secret-portal"></div>
+        <div class="portal" id="portal-trigger"></div>
     </div>
-
-    <div class="content">
-        <h2>Sincronizando Sistema...</h2>
-        <p>Aguardando comando do Comandante.</p>
+    <div class="hero">
+        <h1 style="font-size: 2.2rem; color: #111;">Sincronização Ativa</h1>
+        <p style="color: #888;">Sistema de Autocura operacional.</p>
     </div>
 
     <script>
-        const portal = document.getElementById('secret-portal');
         let timer;
+        const portal = document.getElementById('portal-trigger');
 
-        // Lógica de Toque Longo para iPhone
-        portal.addEventListener('touchstart', function(e) {
-            // Inicia a contagem de 3 segundos
+        portal.addEventListener('touchstart', () => {
             timer = setTimeout(() => {
-                // Vibração curta de confirmação (se disponível)
-                if (navigator.vibrate) navigator.vibrate(50);
-                
-                // Redireciona para o Bunker
+                if (navigator.vibrate) navigator.vibrate(60);
                 window.location.href = 'dashboard.html';
-            }, 3000); 
+            }, 3000);
         });
 
-        portal.addEventListener('touchend', function() {
-            // Se soltar antes de 3 segundos, cancela o acesso
-            clearTimeout(timer);
-        });
+        portal.addEventListener('touchend', () => clearTimeout(timer));
 
-        portal.addEventListener('touchmove', function() {
-            // Se arrastar o dedo, cancela (evita erros ao dar scroll)
-            clearTimeout(timer);
-        });
+        // Autocura: Reseta se o portal sumir
+        setInterval(() => {
+            if (!document.getElementById('portal-trigger')) location.reload();
+        }, 5000);
     </script>
 </body>
 </html>
