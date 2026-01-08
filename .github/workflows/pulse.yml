@@ -1,0 +1,11 @@
+name: Vitrin-Pulse
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sincronizar
+        run: echo "Sinal Ativo"
