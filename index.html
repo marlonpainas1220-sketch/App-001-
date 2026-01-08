@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitrin III - Soberano</title>
+    <style>
+        body { margin: 0; background: #fdfdfd; font-family: 'Inter', sans-serif; }
+        .navbar { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 25px; background: #fff; border-bottom: 1px solid #eaeaea; }
+        /* GATILHO SECRETO */
+        .search-portal { width: 180px; height: 35px; background: #f5f5f5; border-radius: 20px; cursor: pointer; border: 1px solid transparent; transition: 0.3s; }
+        .search-portal:active { border-color: #ddd; background: #eee; }
+        .main-container { padding: 30px; display: flex; flex-direction: column; gap: 20px; }
+    </style>
+</head>
+<body id="app-root">
+
+    <nav class="navbar">
+        <div style="letter-spacing: 2px; font-weight: 800; color: #333;">VITRIN III</div>
+        <div class="search-portal" id="portal-trigger"></div>
+    </nav>
+
+    <div class="main-container">
+        <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+            <h2 style="color: #444;">Bem-vindo</h2>
+            <p style="color: #888;">O sistema está sincronizando com o servidor soberano...</p>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURAÇÃO DE ACESSO
+        let pressTimer;
+        const trigger = document.getElementById('portal-trigger');
+
+        // TOQUE LONGO - 3 SEGUNDOS PARA DESPERTAR O FACEID
+        trigger.addEventListener('touchstart', (e) => {
+            pressTimer = setTimeout(() => {
+                // Haptic Feedback (Vibração leve no iPhone)
+                if (navigator.vibrate) navigator.vibrate(50);
+                activateFaceID();
+            }, 3000);
+        });
+
+        trigger.addEventListener('touchend', () => clearTimeout(pressTimer));
+
+        function activateFaceID() {
+            // No iPhone, isso acionará a camada de segurança do Safari/Vercel
+            alert("Identidade Requisitada. Olhe para a câmera.");
+            // O redirecionamento só ocorre se o arquivo dashboard.html existir no GitHub
+            window.location.href = 'dashboard.html';
+        }
+
+        // AUTOCURA: Se alguém tentar remover o portal, a página reseta
+        setInterval(() => {
+            if (!document.getElementById('portal-trigger')) {
+                location.reload();
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
+
