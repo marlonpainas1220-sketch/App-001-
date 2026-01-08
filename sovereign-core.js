@@ -12,17 +12,13 @@
                 const json = await res.json();
                 return json.contents;
             } catch (e) { 
-                console.warn("⚠️ Falha no sinal externo.");
                 return null; 
             }
         },
 
         async cura() {
-            // 1. Ativa o Selo Verde
             const st = document.getElementById('shield-status');
             if(st) { st.style.background = "#00ff00"; st.innerText = "SINC"; }
-
-            // 2. Renderiza os Cards Reais
             await this.renderizarCards();
         },
 
@@ -30,7 +26,6 @@
             const container = document.getElementById('app-content');
             if(!container) return;
 
-            // Busca dados do X (Trends)
             const temDados = await this.obterSinal('TRENDS');
 
             container.innerHTML = `
@@ -56,7 +51,6 @@
         }
     };
 
-    // Inicialização automática ao carregar
     window.addEventListener('load', () => {
         if(window.Soberano) Soberano.cura();
     });
