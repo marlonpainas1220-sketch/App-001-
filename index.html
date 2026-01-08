@@ -5,14 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Vitrin III</title>
     <style>
-        body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background: #fff; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background: #fff; overflow-x: hidden; }
         .nav { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 1000; }
-        .portal { width: 100px; height: 32px; background: #f0f0f0; border-radius: 16px; cursor: pointer; transition: 0.2s; -webkit-appearance: none; }
-        .portal:active { background: #e0e0e0; transform: scale(0.95); }
-        .hero { padding: 60px 20px; text-align: center; color: #111; }
-        .status-badge { font-size: 10px; background: #00ff00; color: #000; padding: 2px 8px; border-radius: 10px; font-weight: bold; vertical-align: middle; margin-left: 5px; }
-        h1 { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; }
-        p { color: #666; font-size: 15px; }
+        .portal { width: 100px; height: 32px; background: #f0f0f0; border-radius: 16px; cursor: pointer; }
+        .status-badge { font-size: 10px; background: #00ff00; color: #000; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
+        #app-content { padding: 40px 20px; text-align: center; }
     </style>
 </head>
 <body>
@@ -21,54 +18,17 @@
         <div class="portal" id="portal-trigger"></div>
     </div>
     
-    <div class="hero">
-        <h1 id="main-title">Sistema Online</h1>
-        <p id="sub-title">Aguardando blindagem de sinal...</p>
+    <div id="app-content">
+        <h1 style="color: #eee;">Conectando...</h1>
     </div>
 
-    <script src="sovereign-core.js?v=MAX_FORCED_999"></script>
-
+    <script src="sovereign-core.js?v=FORCED_RESET_2026"></script>
     <script>
-        // Gatilho do Dono Mestre (Segurar por 3 segundos no portal)
-        let timer;
-        const trigger = document.getElementById('portal-trigger');
-
-        trigger.addEventListener('touchstart', (e) => {
-            timer = setTimeout(() => {
-                if (navigator.vibrate) navigator.vibrate([60, 40, 60]);
-                window.location.href = 'dashboard.html';
-            }, 3000);
-        });
-        
-        trigger.addEventListener('touchend', () => clearTimeout(timer));
-
-        // Inicialização com Autocura e Destravamento de Cache
-        window.onload = async () => {
-            const status = document.getElementById('shield-status');
-            const sub = document.getElementById('sub-title');
-
-            try {
-                if (typeof Soberano !== 'undefined') {
-                    console.log("🛡️ Blindagem Ativa. Sincronizando...");
-                    
-                    // Chamada sincronizada do Soberano (Passo 1)
-                    await Soberano.cura(); 
-                    const trends = await Soberano.obterSinal('TRENDS');
-                    
-                    if (trends) {
-                        status.style.background = "#00ff00";
-                        status.innerText = "SINC";
-                        sub.innerText = "Trends X e Charts®️ Sincronizados.";
-                    }
-                } else {
-                    throw new Error("CORE_NOT_FOUND");
-                }
-            } catch (e) {
-                console.error("🚨 Erro de conexão:", e);
-                status.innerText = "OFFLINE";
-                status.style.background = "#ff3b30";
-                status.style.color = "#fff";
-                sub.innerText = "Erro de cota ou rede. Reconectando...";
+        window.onload = () => {
+            if (typeof Soberano !== 'undefined') {
+                Soberano.cura();
+            } else {
+                document.getElementById('app-content').innerHTML = "<h1>Erro de Sinal</h1>";
             }
         };
     </script>
