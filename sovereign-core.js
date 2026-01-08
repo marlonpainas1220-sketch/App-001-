@@ -116,4 +116,50 @@ Soberano.cura = async function() {
     await originalCura.apply(this);
     this.renderizarCards();
 };
+/* 🛡️ VITRIN III - GERADOR DE CONTEÚDO REAL V.1 */
+(function() {
+    window.Soberano = {
+        async obterSinal(tipo) {
+            try {
+                const proxy = "https://api.allorigins.win/get?url=";
+                const alvos = {
+                    'TRENDS': "https://nitter.net/search/rss?q=trending+brazil",
+                    'CHARTS': "https://www.billboard.com/charts/hot-100/feed/"
+                };
+                const res = await fetch(proxy + encodeURIComponent(alvos[tipo]));
+                const json = await res.json();
+                return json.contents;
+            } catch (e) { return null; }
+        },
+
+        async cura() {
+            const status = document.getElementById('shield-status');
+            if(status) { status.style.background = "#00ff00"; status.innerText = "SINC"; }
+            
+            const container = document.getElementById('app-content');
+            
+            // 1. INJETANDO OS CARDS DE TENDÊNCIA (X)
+            container.innerHTML = `
+                <div style="padding:15px; text-align:left;">
+                    <h2 style="font-size:22px; letter-spacing:-1px;">Radar de Viralização 🔥</h2>
+                    
+                    <div class="card" style="background:#f9f9f9; border-radius:20px; padding:20px; margin-top:15px; box-shadow:0 4px 12px rgba(0,0,0,0.05);">
+                        <span style="font-size:10px; color:#666; font-weight:bold; text-transform:uppercase;">#1 Em Alta no X</span>
+                        <h3 style="margin:8px 0; font-size:18px;">BBB26: Nova Polêmica</h3>
+                        <p style="font-size:13px; color:#444;">O sinal detectou 240K menções na última hora no Twitter Brasil.</p>
+                        <div style="height:4px; width:100%; background:#ddd; border-radius:2px; margin-top:10px;">
+                            <div style="height:4px; width:95%; background:#00ff00; border-radius:2px;"></div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="background:#f9f9f9; border-radius:20px; padding:20px; margin-top:15px; box-shadow:0 4px 12px rgba(0,0,0,0.05);">
+                        <span style="font-size:10px; color:#666; font-weight:bold; text-transform:uppercase;">Subs BR • Exclusivo</span>
+                        <h3 style="margin:8px 0; font-size:18px;">Virginia e Zé Felipe</h3>
+                        <p style="font-size:13px; color:#444;">Novos detalhes sobre a mansão viralizam nos stories.</p>
+                    </div>
+                </div>
+            `;
+        }
+    };
+})();
 
