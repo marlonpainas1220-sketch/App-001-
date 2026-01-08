@@ -5,40 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Vitrin III</title>
     <style>
-        body { margin: 0; font-family: -apple-system, sans-serif; background: #fff; overflow: hidden; }
-        .header { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid #eee; }
-        .portal { width: 100px; height: 35px; background: #f5f5f5; border-radius: 20px; transition: 0.5s; }
-        .portal:active { background: #e0e0e0; }
-        .hero { padding: 50px 20px; text-align: center; }
+        body { margin: 0; font-family: sans-serif; background: #fff; }
+        .nav { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid #eee; }
+        .portal { width: 120px; height: 35px; background: #f5f5f5; border-radius: 20px; }
+        .hero { padding: 50px 20px; text-align: center; color: #333; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div style="font-weight: 900; letter-spacing: 1px;">VITRIN III</div>
+    <div class="nav">
+        <div style="font-weight: 900;">VITRIN III</div>
         <div class="portal" id="portal-trigger"></div>
     </div>
     <div class="hero">
-        <h1 style="font-size: 2.2rem; color: #111;">Sincronização Ativa</h1>
-        <p style="color: #888;">Sistema de Autocura operacional.</p>
+        <h1>Sistema Online</h1>
+        <p>Sincronização de alta performance ativa.</p>
     </div>
 
+    <script src="sovereign-core.js"></script>
     <script>
         let timer;
-        const portal = document.getElementById('portal-trigger');
+        const trigger = document.getElementById('portal-trigger');
 
-        portal.addEventListener('touchstart', () => {
+        trigger.addEventListener('touchstart', () => {
             timer = setTimeout(() => {
                 if (navigator.vibrate) navigator.vibrate(60);
                 window.location.href = 'dashboard.html';
             }, 3000);
         });
-
-        portal.addEventListener('touchend', () => clearTimeout(timer));
-
-        // Autocura: Reseta se o portal sumir
-        setInterval(() => {
-            if (!document.getElementById('portal-trigger')) location.reload();
-        }, 5000);
+        trigger.addEventListener('touchend', () => clearTimeout(timer));
+        
+        Soberano.cura('portal-trigger');
     </script>
 </body>
 </html>
