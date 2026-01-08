@@ -91,4 +91,29 @@ window.onload = async () => {
         }
     };
 })();
+/* 🛡️ INJETOR DE EMERGÊNCIA - VITRIN III */
+Soberano.renderizarCards = function() {
+    const subTitle = document.getElementById('sub-title');
+    const hero = document.querySelector('.hero');
+    
+    // Força a exibição imediata para testar se o sistema está vivo
+    subTitle.innerText = "Sinal Real Sincronizado. Radar Ativo 🔥";
+    
+    hero.innerHTML = `
+        <div style="padding:20px; text-align:left;">
+            <div style="background:#f9f9f9; border-radius:15px; padding:15px; margin-bottom:15px; border-left:5px solid #00ff00;">
+                <small style="color:#666;">#1 TRENDING BRASIL</small>
+                <h3 style="margin:5px 0;">Sincronizando Dados Reais...</h3>
+                <p style="font-size:12px; color:#999;">O sinal foi destravado. Aguarde 30s para a primeira carga.</p>
+            </div>
+        </div>
+    `;
+};
+
+// Chama a renderização assim que o sistema der "SINC"
+const originalCura = Soberano.cura;
+Soberano.cura = async function() {
+    await originalCura.apply(this);
+    this.renderizarCards();
+};
 
