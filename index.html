@@ -5,36 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Vitrin III</title>
     <style>
-        body { margin: 0; font-family: sans-serif; background: #fff; }
-        .nav { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid #eee; }
-        .portal { width: 120px; height: 35px; background: #f5f5f5; border-radius: 20px; }
+        body { margin: 0; font-family: sans-serif; background: #fff; overflow-x: hidden; }
+        .nav { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 100; }
+        .portal { width: 120px; height: 35px; background: #f5f5f5; border-radius: 20px; cursor: pointer; transition: 0.3s; }
+        .portal:active { background: #e0e0e0; transform: scale(0.95); }
         .hero { padding: 50px 20px; text-align: center; color: #333; }
+        .status-badge { font-size: 10px; background: #00ff00; color: #000; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="nav">
-        <div style="font-weight: 900;">VITRIN III</div>
+        <div style="font-weight: 900; letter-spacing: -1px;">VITRIN III <span class="status-badge" id="shield-status">ON</span></div>
         <div class="portal" id="portal-trigger"></div>
     </div>
+    
     <div class="hero">
-        <h1>Sistema Online</h1>
-        <p>Sincronização de alta performance ativa.</p>
+        <h1 id="main-title">Sistema Online</h1>
+        <p id="sub-title">Sincronização de alta performance ativa.</p>
     </div>
 
-    <script src="sovereign-core.js"></script>
+    <script src="sovereign-core.js?v=999"></script>
+
     <script>
+        // Gatilho do Dono Mestre (Segurar por 3 segundos no portal)
         let timer;
         const trigger = document.getElementById('portal-trigger');
 
-        trigger.addEventListener('touchstart', () => {
+        trigger.addEventListener('touchstart', (e) => {
             timer = setTimeout(() => {
-                if (navigator.vibrate) navigator.vibrate(60);
+                if (navigator.vibrate) navigator.vibrate([60, 40, 60]);
                 window.location.href = 'dashboard.html';
             }, 3000);
         });
-        trigger.addEventListener('touchend', () => clearTimeout(timer));
         
-        Soberano.cura('portal-trigger');
+        trigger.addEventListener('touchend', () => clearTimeout(timer));
+
+        // Inicialização Autônoma (Se o Soberano falhar por cota, o app não quebra)
+        window.onload = async () => {
+            try {
+                if (typeof Soberano !== 'undefined') {
+                    console.log("🛡️ Blindagem V.999 Ativa.");
+                    // Tenta carregar as notícias reais sem gastar cota
+                    const trends = await Soberano.obterSinal('TRENDS');
+                    if (trends) document.getElementById('sub-title').innerText = "Sinal real de tendências sincronizado.";
+                }
+            } catch (e) {
+                document.getElementById('shield-status').innerText = "OFFLINE";
+                document.getElementById('shield-status').style.background = "red";
+            }
+        };
     </script>
 </body>
 </html>
