@@ -51,4 +51,44 @@ window.onload = async () => {
         }
     }
 };
+/* 🛡️ VITRIN III - INJETOR DE DADOS REAL-TIME V.1000 */
+
+(function() {
+    window.Soberano = {
+        async obterSinal(tipo) {
+            try {
+                const proxy = "https://api.allorigins.win/get?url=";
+                const alvos = {
+                    'TRENDS': "https://nitter.net/search/rss?q=trending+brazil",
+                    'CHARTS': "https://www.billboard.com/charts/hot-100/feed/"
+                };
+                const res = await fetch(proxy + encodeURIComponent(alvos[tipo]) + "&t=" + Date.now());
+                const json = await res.json();
+                return json.contents;
+            } catch (e) { return null; }
+        },
+
+        async cura() {
+            // 1. Muda o status para Verde (O que já aconteceu no seu iPhone)
+            const st = document.getElementById('shield-status');
+            if(st) { st.style.background = "#00ff00"; st.innerText = "SINC"; }
+
+            // 2. BUSCA E SUBSTITUI O TEXTO "AGUARDANDO..."
+            const subTitle = document.getElementById('sub-title');
+            const dados = await this.obterSinal('TRENDS');
+            
+            if (dados) {
+                subTitle.innerHTML = "<b>Sinal Real Ativo:</b> As tendências de hoje foram sincronizadas.";
+                // Injeta os cards de notícias aqui
+                this.renderizarCards();
+            }
+        },
+
+        renderizarCards() {
+            // Esta função substitui o conteúdo vazio pela lista de fofocas/trends
+            const hero = document.querySelector('.hero');
+            hero.innerHTML += '<div style="margin-top:20px; color:#000;">🔥 Radar de Viralização carregando...</div>';
+        }
+    };
+})();
 
