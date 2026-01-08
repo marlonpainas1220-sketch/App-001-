@@ -5,58 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bunker ADM</title>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; padding: 25px; }
-        .card { border: 1px solid #333; padding: 20px; border-radius: 15px; background: #111; margin-top: 20px; }
+        body { background: #000; color: #fff; font-family: sans-serif; padding: 30px; }
+        .box { border: 1px solid #333; padding: 20px; border-radius: 15px; background: #111; }
         .status { color: #00ff00; font-weight: bold; }
-        .btn-check { background: #fff; color: #000; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; margin-top: 20px; }
+        .btn { background: #fff; color: #000; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; margin-top: 20px; }
     </style>
 </head>
 <body>
-    <h2>Central de Comando</h2>
-    <div class="card">
-        <p>Status: <span class="status" id="status-text">ANALISANDO...</span></p>
-        <p>Repositório: App-001-</p>
+    <div class="box">
+        <h2>Painel Soberano</h2>
+        <p>Status: <span id="st">CONECTANDO...</span></p>
+        <button class="btn" onclick="rodarScan()">VARREDURA DE CÓDIGO</button>
     </div>
-    <button class="btn-check" onclick="verificarIntegridade()">VARREDURA TOTAL</button>
 
+    <script src="sovereign-core.js"></script>
     <script>
-        // Camuflagem de Token para evitar bloqueio do GitHub
-        const s1 = "ghp_NmC3CxbatSj";
-        const s2 = "eQn3IiX6nufAzhk";
-        const s3 = "WpI64WABvw";
-        const TOKEN = s1 + s2 + s3;
-
-        async function verificarIntegridade() {
-            const statusLabel = document.getElementById('status-text');
-            statusLabel.innerText = "EXECUTANDO VARREDURA...";
-            
-            try {
-                const res = await fetch('https://api.github.com/repos/marlonpainas1220-sketch/App-001-', {
-                    headers: { 'Authorization': `token ${TOKEN}` }
-                });
-                
-                if (res.ok) {
-                    statusLabel.innerText = "SISTEMA SEGURO ✓";
-                    alert("Varredura Concluída: Nenhum erro detectado no código.");
-                } else {
-                    statusLabel.innerText = "ERRO DE CONEXÃO";
-                }
-            } catch (e) {
-                statusLabel.innerText = "FALHA CRÍTICA";
-            }
+        async function rodarScan() {
+            const ok = await Soberano.check();
+            document.getElementById('st').innerText = ok ? "100% PROTEGIDO" : "ERRO NA CHAVE";
+            if(ok) alert("Varredura Concluída: Repositório App-001- está íntegro.");
         }
     </script>
-<script src="sovereign-core.js"></script>
-<script>
-    // Ativa a autocura usando o motor central
-    Soberano.cura('portal-trigger');
-</script>
-<script src="sovereign-core.js"></script>
-<script>
-    async function verificarIntegridade() {
-        const ok = await Soberano.check();
-        if(ok) alert("Varredura Concluída: Sistema 100% Protegido.");
-    }
-</script>
 </body>
 </html>
