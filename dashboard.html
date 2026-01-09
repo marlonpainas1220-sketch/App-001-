@@ -3,78 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VITRIN III | Admin HQ</title>
+    <title>VITRIN III | Command Center</title>
     <style>
-        body { background: #000; color: #00ff00; font-family: monospace; padding: 20px; margin: 0; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .stat-card { border: 1px solid #111; background: #050505; padding: 15px; border-radius: 10px; }
-        .val { font-size: 20px; font-weight: bold; color: #fff; }
-        .label { font-size: 9px; text-transform: uppercase; color: #555; }
+        body { background: #000; color: #00ff00; font-family: 'Courier New', monospace; margin: 0; padding: 25px; }
+        .header { display: flex; justify-content: space-between; border-bottom: 1px solid #111; padding-bottom: 15px; margin-bottom: 25px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         
-        textarea, input { background: #0a0a0a; border: 1px solid #222; color: #0f0; width: 100%; padding: 10px; margin: 5px 0; border-radius: 5px; box-sizing: border-box; }
-        button { background: #00ff00; color: #000; border: none; padding: 15px; width: 100%; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        .stat-box { background: #080808; border: 1px solid #1a1a1a; padding: 20px; border-radius: 15px; }
+        .label { font-size: 10px; color: #444; letter-spacing: 2px; margin-bottom: 10px; }
+        .value { font-size: 24px; color: #fff; font-weight: bold; }
         
-        .hazard { color: #ff3b30; animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
+        .panel { background: #080808; border: 1px solid #1a1a1a; padding: 25px; border-radius: 15px; margin-top: 20px; }
+        input, textarea { background: #000; border: 1px solid #222; color: #0f0; width: 100%; padding: 15px; margin-top: 10px; border-radius: 8px; box-sizing: border-box; }
+        button { background: #00ff00; color: #000; font-weight: 900; border: none; padding: 20px; width: 100%; margin-top: 20px; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
         
-        .console { background: #050505; border: 1px solid #111; height: 150px; overflow-y: auto; padding: 10px; font-size: 10px; color: #444; margin-top: 15px; }
+        .live-log { height: 100px; background: #000; border: 1px solid #111; margin-top: 20px; padding: 10px; font-size: 10px; color: #005500; overflow-y: hidden; }
+        .threat-level { color: #ff3b30; }
     </style>
 </head>
 <body>
-    <h2 style="color:#fff; margin-top:0;">◈ ADMIN HQ <span style="font-size:12px; color:#555;">v.Soberano</span></h2>
+
+    <div class="header">
+        <div><strong>VITRIN III</strong> // ADMIN HQ</div>
+        <div id="clock">00:00:00</div>
+    </div>
 
     <div class="grid">
-        <div class="stat-card">
-            <div class="label">Usuários Ativos</div>
-            <div class="val" id="count-views">1.248</div>
+        <div class="stat-box">
+            <div class="label">LEITORES ATIVOS</div>
+            <div class="value" id="readers">2,842</div>
         </div>
-        <div class="stat-card">
-            <div class="label">Saúde do Core</div>
-            <div class="val" style="color:#0f0;">98.4%</div>
+        <div class="stat-box">
+            <div class="label">STATUS DO CORE</div>
+            <div class="value" style="color: #00ff00;">STABLE</div>
         </div>
-        <div class="stat-card">
-            <div class="label">Ameaças Detectadas</div>
-            <div class="val hazard">03</div>
+        <div class="stat-box">
+            <div class="label">SINAL DE FOFOCA</div>
+            <div class="value">98.2%</div>
         </div>
-        <div class="stat-card">
-            <div class="label">Sinal Latência</div>
-            <div class="val">14ms</div>
+        <div class="stat-box">
+            <div class="label">AMEAÇAS (BOTS)</div>
+            <div class="value threat-level">0</div>
         </div>
     </div>
 
-    <div class="stat-card">
-        <div class="label">Injetor de Pauta Exclusiva</div>
-        <input type="text" id="titulo" placeholder="TÍTULO DO FURO">
-        <textarea id="desc" placeholder="CONTEÚDO DA INTELIGÊNCIA..."></textarea>
-        <button onclick="lancar()">PUBLICAR NO SINAL</button>
+    <div class="panel">
+        <div class="label">INJETOR DE PAUTA EXCLUSIVA (BREAKING NEWS)</div>
+        <input type="text" id="titulo" placeholder="TÍTULO DA CELEBRIDADE">
+        <textarea id="desc" rows="3" placeholder="O QUE ESTÁ ACONTECENDO NOS BASTIDORES?"></textarea>
+        <button onclick="publish()">LANÇAR NO FEED</button>
     </div>
 
-    <div class="console" id="console">
-        [SYS] Núcleo Soberano inicializado...<br>
-        [NET] Firewall Vercel ativo...<br>
-        [SINAL] Escaneando Billboard Hot 100...<br>
+    <div class="live-log" id="log">
+        > Inicializando monitoramento de subcelebridades...<br>
+        > Aguardando sinal de portais parceiros...
     </div>
 
     <script>
-        function lancar() {
+        function publish() {
             const data = {
                 titulo: document.getElementById('titulo').value,
                 desc: document.getElementById('desc').value,
-                hype: Math.floor(Math.random() * 50) + 100,
+                hype: Math.floor(Math.random() * 40) + 120,
                 timestamp: Date.now()
             };
             localStorage.setItem('noticia_manual', JSON.stringify(data));
-            document.getElementById('console').innerHTML += `[ALERT] Pauta Injetada: ${data.titulo}<br>`;
-            alert("SINAL ATUALIZADO NO APP.");
+            document.getElementById('log').innerHTML += `<br>> [PUBLISH] Notícia lançada: ${data.titulo}`;
+            alert("PAUTA INJETADA NO SINAL COM SUCESSO.");
         }
 
-        // Simulação de Tráfego em tempo real
+        // Relógio e Simulação de Tráfego
         setInterval(() => {
-            const views = document.getElementById('count-views');
-            let n = parseInt(views.innerText.replace('.',''));
-            n += Math.floor(Math.random() * 5) - 2;
-            views.innerText = n.toLocaleString('pt-BR');
-        }, 3000);
+            const d = new Date();
+            document.getElementById('clock').innerText = d.toLocaleTimeString();
+            
+            let r = parseInt(document.getElementById('readers').innerText.replace(',',''));
+            r += Math.floor(Math.random() * 7) - 3;
+            document.getElementById('readers').innerText = r.toLocaleString();
+        }, 1000);
     </script>
 </body>
 </html>
