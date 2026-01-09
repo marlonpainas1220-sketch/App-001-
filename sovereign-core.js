@@ -1,4 +1,4 @@
-/* 🛡️ VITRIN III - NÚCLEO SOBERANO V.HIGH_END_2026 */
+/* 🛡️ VITRIN III - NÚCLEO SOBERANO V.MEDIA_2026 */
 (function() {
     window.Soberano = {
         setTabActive(id) {
@@ -7,99 +7,84 @@
             if(btn) btn.classList.add('active');
         },
 
-        // ABA 1: RADAR (Inteligência Social)
+        // ABA 1: RADAR (Foco em Eventos/TV)
         async cura() {
             this.setTabActive('btn-radar');
             const container = document.getElementById('app-content');
             container.innerHTML = `
                 <span class="feed-label">Radar de Inteligência</span>
-                <div class="card-fofoca">
-                    <span class="hype-badge">PICO DE SINAL</span>
-                    <small style="color:var(--accent); font-weight:800;">TRENDING X BRASIL</small>
-                    <h3 style="margin-top:10px;">BBB26: Formação de Paredão</h3>
-                    <p>O algoritmo detectou volume crítico de menções (340k/hora). O engajamento sugere polarização imediata.</p>
-                    <div style="margin-top:15px; font-size:10px; color:var(--accent); font-weight:900;">⚡ +145% VELOCIDADE</div>
+                <div class="card-fofoca" style="padding:0; overflow:hidden;">
+                    <img src="[attachment_2](attachment)" style="width:100%; height:180px; object-fit:cover;">
+                    <div style="padding:20px;">
+                        <span class="hype-badge">AO VIVO</span>
+                        <small style="color:var(--accent); font-weight:800;">BIG BROTHER BRASIL</small>
+                        <h3 style="margin-top:10px;">BBB26: Nova Prova do Líder agita a casa</h3>
+                        <p>Acompanhe em tempo real o pico de engajamento no X e as primeiras polêmicas do novo ciclo.</p>
+                    </div>
                 </div>
             `;
         },
 
-        // ABA 2: SUBS BR (Layout de Revista)
+        // ABA 2: SUBS BR (Celebridades)
         async abaSubs() {
             this.setTabActive('btn-subs');
             const container = document.getElementById('app-content');
-            const manual = JSON.parse(localStorage.getItem('noticia_manual'));
-            let feedManual = "";
-
-            if(manual && (Date.now() - manual.timestamp < 3600000)) {
-                feedManual = `
-                    <div class="card-fofoca" style="border: 1px solid var(--accent); background: rgba(0, 255, 0, 0.03);">
-                        <span class="hype-badge" style="background:var(--accent); color:#000;">🚨 EXCLUSIVO</span>
-                        <small style="color:var(--accent); font-weight:800;">SINAL INJETADO (ADMIN)</small>
-                        <h3 style="margin-top:10px;">${manual.titulo}</h3>
-                        <p>${manual.desc}</p>
-                    </div>`;
-            }
-
             container.innerHTML = `
-                <span class="feed-label">Círculo Íntimo & Bastidores</span>
-                ${feedManual}
-                <div class="card-fofoca">
-                    <span class="hype-badge">HOT</span>
-                    <small style="color:var(--text-dim); font-weight:700;">PRIVATE FEED</small>
-                    <h3>Virgínia e Zé Felipe</h3>
-                    <p>Bastidores da nova mansão: Detalhes sobre a segurança nível bunker e a repercussão no círculo das subs.</p>
+                <span class="feed-label">Círculo Íntimo</span>
+                
+                <div class="card-fofoca" style="padding:0; overflow:hidden;">
+                    <img src="[attachment_0](attachment)" style="width:100%; height:200px; object-fit:cover;">
+                    <div style="padding:20px;">
+                        <span class="hype-badge">LUXO</span>
+                        <small style="color:var(--text-dim); font-weight:700;">PRIVATE VIEW</small>
+                        <h3>Virgínia e Zé Felipe: Tour pela Mansão</h3>
+                        <p>O sinal captou detalhes exclusivos da nova área de lazer que parou a internet hoje.</p>
+                    </div>
                 </div>
-                <div class="card-fofoca">
-                    <span class="hype-badge">ALERTA</span>
-                    <small style="color:var(--text-dim); font-weight:700;">CONEXÃO SP</small>
-                    <h3>Neymar Jr</h3>
-                    <p>O sinal captou movimentação atípica em postagens recentes. Analistas sugerem nova fase de publicidade.</p>
+
+                <div class="card-fofoca" style="padding:0; overflow:hidden; margin-top:20px;">
+                    <img src="[attachment_1](attachment)" style="width:100%; height:200px; object-fit:cover;">
+                    <div style="padding:20px;">
+                        <span class="hype-badge">ALERTA</span>
+                        <small style="color:var(--text-dim); font-weight:700;">CONEXÃO BR/SA</small>
+                        <h3>Neymar Jr: Bastidores do Evento</h3>
+                        <p>Novas imagens do craque em evento de gala geram especulações sobre seu próximo passo na carreira.</p>
+                    </div>
                 </div>
             `;
         },
 
-        // ABA 3: CHARTS (Heatmap Dark)
+        // ABA 3: CHARTS (Artistas)
         async abaCharts(genero = 'URBAN') {
             this.setTabActive('btn-charts');
             const container = document.getElementById('app-content');
-            const base = {
-                'URBAN': { tit: 'Trap & Funk', cor: '#00ff00', rank: ['MC IG - Novo Álbum', 'Veigh - Single', 'KayBlack - Collab'] },
-                'POP': { tit: 'Pop Brasil', cor: '#ff00ff', rank: ['Luísa Sonza', 'Anitta - Global', 'Jão - Live'] },
-                'SERTANEJO': { tit: 'Sertanejo', cor: '#ffcc00', rank: ['Ana Castela', 'Gusttavo Lima', 'Jorge & Mateus'] },
-                'MPB': { tit: 'MPB / Alt', cor: '#00ccff', rank: ['Liniker', 'Lulu Santos', 'Silva'] }
+            const imgG = {
+                'URBAN': '[attachment_3](attachment)',
+                'POP': 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&q=80&w=500',
+                'SERTANEJO': 'https://images.unsplash.com/photo-1598387181032-a3103a2db5b3?auto=format&fit=crop&q=80&w=500',
+                'MPB': 'https://images.unsplash.com/photo-1514525253361-bee8718a74a2?auto=format&fit=crop&q=80&w=500'
             };
-            const s = base[genero];
             
             container.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                    <span class="feed-label" style="margin:0;">Ondas de Calor</span>
-                    <select onchange="Soberano.abaCharts(this.value)" style="background:#111; color:#fff; border:1px solid #222; padding:6px 12px; border-radius:12px; font-size:10px; font-weight:800; outline:none;">
-                        <option value="URBAN" ${genero==='URBAN'?'selected':''}>URBAN</option>
-                        <option value="POP" ${genero==='POP'?'selected':''}>POP</option>
-                        <option value="SERTANEJO" ${genero==='SERTANEJO'?'selected':''}>SERTANEJO</option>
-                        <option value="MPB" ${genero==='MPB'?'selected':''}>MPB</option>
+                    <span class="feed-label">Sinal de Música</span>
+                    <select onchange="Soberano.abaCharts(this.value)" style="background:#111; color:#fff; border:1px solid #222; padding:6px; border-radius:12px; font-size:10px;">
+                        <option value="URBAN">URBAN</option>
+                        <option value="POP">POP</option>
+                        <option value="SERTANEJO">SERTANEJO</option>
+                        <option value="MPB">MPB</option>
                     </select>
                 </div>
 
-                <div class="card-fofoca" style="padding:25px; border-top: 4px solid ${s.cor};">
-                    <small style="color:${s.cor}; font-weight:900; letter-spacing:1px;">CALOR • ${s.tit.toUpperCase()}</small>
-                    
-                    <div style="display:flex; align-items:flex-end; height:70px; gap:6px; margin:25px 0;">
-                        <div style="flex:1; background:#1a1a1a; height:30%; border-radius:4px;"></div>
-                        <div style="flex:1; background:#1a1a1a; height:60%; border-radius:4px;"></div>
-                        <div style="flex:1; background:linear-gradient(to top, #111, ${s.cor}); height:100%; border-radius:4px; box-shadow:0 0 20px ${s.cor}33;"></div>
-                        <div style="flex:1; background:#1a1a1a; height:45%; border-radius:4px;"></div>
-                    </div>
-
-                    <div style="font-size:13px; color:#eee;">
-                        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #1a1a1a;">
-                            <span>1. ${s.rank[0]}</span> <span style="color:${s.cor}; font-weight:900;">🔥 TOP 1</span>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #1a1a1a;">
-                            <span>2. ${s.rank[1]}</span> <span style="color:var(--text-dim);">VIBRANTE</span>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; padding:10px 0;">
-                            <span>3. ${s.rank[2]}</span> <span style="color:var(--text-dim);">SUBINDO</span>
+                <div class="card-fofoca" style="padding:0; overflow:hidden;">
+                    <img src="${imgG[genero]}" style="width:100%; height:150px; object-fit:cover; filter: grayscale(0.5);">
+                    <div style="padding:20px;">
+                        <small style="color:var(--accent); font-weight:900;">ONDAS DE CALOR ATIVAS</small>
+                        <h3 style="margin-top:5px;">Top Artistas: ${genero}</h3>
+                        <div style="margin-top:15px; background:rgba(255,255,255,0.03); border-radius:10px; padding:10px;">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                                <span>1. Mainstream Artist</span><span style="color:var(--accent);">🔥 100%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
