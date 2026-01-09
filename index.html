@@ -1,71 +1,89 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>VITRIN III | X-SDR</title>
+    <title>VITRIN III | Persona</title>
+    <link rel="apple-touch-icon" href="icon.png.JPG">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style>
-        :root { --gold: #FFD700; --bg: #000; --border: #1A1A1A; }
-        * { -webkit-touch-callout: none; -webkit-user-select: none; box-sizing: border-box; outline: none; }
-        body { margin: 0; font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: #fff; padding-bottom: 90px; }
+        :root { --gold: #FFD700; --bg: #000; --card-bg: #111; --border: #222; --text-dim: #999; }
+        * { -webkit-touch-callout: none; -webkit-user-select: none; box-sizing: border-box; }
+        body { margin: 0; font-family: 'SF Pro Display', -apple-system, sans-serif; background: var(--bg); color: #fff; padding-bottom: 90px; }
         
-        /* Splash Blindada com sua Logo */
-        #splash { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10000; transition: 0.6s ease-in-out; }
-        .logo-main { width: 120px; height: 120px; border-radius: 20px; border: 2px solid var(--gold); box-shadow: 0 0 20px var(--gold); }
+        /* Splash com Persona 3D */
+        #splash { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10000; transition: 0.8s ease-in-out; }
+        .persona-logo { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold); box-shadow: 0 0 40px rgba(255, 215, 0, 0.4); }
+        .splash-text { margin-top: 20px; color: var(--gold); letter-spacing: 3px; font-weight: 900; font-size: 14px; }
 
-        .nav { height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; position: sticky; top: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid var(--border); }
-        .tab-nav { display: flex; width: 100%; border-bottom: 1px solid var(--border); background: #000; }
-        .tab-nav div { flex: 1; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #555; position: relative; }
-        .tab-nav div.active { color: #fff; }
-        .tab-nav div.active::after { content: ''; position: absolute; bottom: 0; width: 50px; height: 4px; background: var(--gold); border-radius: 2px; }
+        /* Header Minimalista */
+        .nav-main { height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; position: sticky; top: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid var(--border); }
+        .app-title { font-weight: 800; font-size: 20px; }
+        .portal-trigger { width: 30px; height: 4px; background: #333; border-radius: 10px; cursor: pointer; }
 
-        /* Timeline Estilo X */
-        .x-post { padding: 15px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; }
-        .avatar-v3 { width: 45px; height: 45px; border-radius: 50%; background-image: url('apple-touch-icon.png.JPG'); background-size: cover; border: 1px solid var(--gold); }
-        .post-body { flex: 1; }
-        .post-header { font-weight: 800; font-size: 15px; display: flex; align-items: center; gap: 4px; }
-        .verified { color: var(--gold); font-size: 12px; }
-        .post-content { font-size: 15px; line-height: 1.4; color: #E7E9EA; margin-top: 4px; }
-        .post-media { width: 100%; border-radius: 15px; margin-top: 10px; border: 1px solid var(--border); }
-        
-        .portal-v3 { width: 30px; height: 4px; background: #111; border-radius: 10px; }
-        .tab-bar { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; }
+        /* Abas de Navegação (Para o Trending Topics) */
+        .tab-menu { display: flex; width: 100%; border-bottom: 1px solid var(--border); background: #000; }
+        .tab-menu-item { flex: 1; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: var(--text-dim); position: relative; }
+        .tab-menu-item.active { color: #fff; }
+        .tab-menu-item.active::after { content: ''; position: absolute; bottom: 0; width: 60px; height: 3px; background: var(--gold); border-radius: 1.5px; }
+
+        /* Cartões de Notícia (Estilo Persona) */
+        #app-content { padding: 20px; }
+        .news-card { background: var(--card-bg); border-radius: 20px; margin-bottom: 25px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+        .card-image { width: 100%; height: 200px; object-fit: cover; background: #000; border-bottom: 1px solid var(--border); }
+        .card-body { padding: 20px; }
+        .card-title { font-size: 18px; font-weight: 700; line-height: 1.4; margin-bottom: 10px; }
+        .card-desc { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
+        .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 15px; font-size: 13px; color: var(--text-dim); }
+        .card-persona-avatar { width: 30px; height: 30px; border-radius: 50%; background-image: url('icon.png.JPG'); background-size: cover; border: 1px solid var(--gold); }
+        .verified-badge { color: var(--gold); font-weight: 700; font-size: 12px; }
+
+        /* Menu Inferior */
+        .bottom-menu { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom); }
+        .menu-item { font-size: 26px; color: #555; }
+        .menu-item.active { color: var(--gold); }
     </style>
 </head>
 <body oncontextmenu="return false;">
     <div id="splash">
-        <img src="apple-touch-icon.png.JPG" class="logo-main"> <p style="color:var(--gold); margin-top:15px; font-weight:900; letter-spacing:2px;">VITRIN III</p>
+        <img src="icon.png.JPG" class="persona-logo">
+        <div class="splash-text">SOVEREIGN PERSONA</div>
     </div>
     
-    <div class="nav">
-        <div style="font-weight: 900; font-size: 18px;">Para você</div>
-        <div class="portal-v3" id="portal-trigger"></div>
+    <div class="nav-main">
+        <div class="app-title">VITRIN<span style="color:var(--gold)">III</span></div>
+        <div class="portal-trigger" id="portal-trigger"></div>
     </div>
 
-    <div class="tab-nav">
-        <div class="active">Trending</div>
-        <div>Notícias</div>
+    <div class="tab-menu">
+        <div class="tab-menu-item active" onclick="Soberano.loadPrincipal()">Hype Feed</div>
+        <div class="tab-menu-item" onclick="Soberano.loadTrending()">Trending Topics</div>
     </div>
     
     <div id="app-content"></div>
 
-    <div class="tab-bar">
-        <span style="color:var(--gold); font-size:24px;">◈</span>
-        <span style="color:#333; font-size:24px;">⌬</span>
-        <span style="color:#333; font-size:24px;">◎</span>
+    <div class="bottom-menu">
+        <span class="menu-item active">🏠</span>
+        <span class="menu-item">🔍</span>
+        <span class="menu-item">⚙️</span>
     </div>
 
     <script src="sovereign-core.js"></script>
+    <script async src="https://www.tiktok.com/embed.js"></script>
     <script>
         window.onload = () => {
-            if (typeof Soberano !== 'undefined') { Soberano.cura(); }
-            setTimeout(() => { document.getElementById('splash').style.transform = 'scale(1.5)'; document.getElementById('splash').style.opacity = '0'; setTimeout(()=> document.getElementById('splash').remove(), 600); }, 2000);
+            if (typeof Soberano !== 'undefined') { Soberano.loadPrincipal(); }
+            setTimeout(() => { 
+                const s = document.getElementById('splash');
+                s.style.opacity = '0'; 
+                s.style.transform = 'translateY(-100%)'; 
+                setTimeout(()=>s.remove(), 800); 
+            }, 2500);
         };
         let t; const gat = document.getElementById('portal-trigger');
         gat.addEventListener('touchstart', () => { gat.style.background="var(--gold)"; t = setTimeout(()=> location.href='dashboard.html', 3000); });
-        gat.addEventListener('touchend', () => { gat.style.background="#111"; clearTimeout(t); });
+        gat.addEventListener('touchend', () => { gat.style.background="#333"; clearTimeout(t); });
     </script>
 </body>
 </html>
