@@ -7,36 +7,56 @@
     
     <link rel="apple-touch-icon" href="apple-touch-icon.png.JPG">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Vitrin III">
 
     <style>
-        body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background: #fff; overflow-x: hidden; padding-bottom: 80px; }
+        /* TELA DE SPLASH */
+        #splash {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        .loader {
+            width: 40px; height: 40px;
+            border: 3px solid #333;
+            border-top: 3px solid #00ff00;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background: #fff; padding-bottom: 80px; }
         .nav { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 1000; }
         .portal { width: 100px; height: 32px; background: #f0f0f0; border-radius: 16px; cursor: pointer; }
-        .status-badge { font-size: 10px; background: #00ff00; color: #000; padding: 2px 8px; border-radius: 10px; font-weight: bold; vertical-align: middle; }
+        .status-badge { font-size: 10px; background: #00ff00; color: #000; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
         #app-content { padding: 20px; min-height: 80vh; }
-
-        /* Abas Inferiores */
         .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; padding-bottom: env(safe-area-inset-bottom); }
-        .tab-item { text-align: center; color: #999; font-size: 10px; font-weight: bold; text-decoration: none; border: none; background: none; }
+        .tab-item { text-align: center; color: #999; font-size: 10px; font-weight: bold; cursor: pointer; }
         .tab-item.active { color: #000; }
         .tab-icon { font-size: 20px; display: block; margin-bottom: 2px; }
     </style>
 </head>
 <body>
+
+    <div id="splash">
+        <div style="color:#fff; font-size:24px; font-weight:900; letter-spacing:-1px; margin-bottom:20px;">VITRIN III</div>
+        <div class="loader"></div>
+        <div style="color:#555; font-size:10px; margin-top:20px; font-weight:bold;">SINCRO-NIZANDO NÚCLEO...</div>
+    </div>
+
     <div class="nav">
-        <div style="font-weight: 900; font-size: 18px; letter-spacing: -1px;">
-            VITRIN III <span class="status-badge" id="shield-status">ON</span>
-        </div>
+        <div style="font-weight: 900; font-size: 18px;">VITRIN III <span class="status-badge" id="shield-status">ON</span></div>
         <div class="portal" id="portal-trigger"></div>
     </div>
     
-    <div id="app-content">
-        <div style="text-align: center; margin-top: 100px;">
-            <h1 style="color: #ccc; font-size: 18px;">Conectando ao Sinal...</h1>
-        </div>
-    </div>
+    <div id="app-content"></div>
 
     <div class="tab-bar">
         <div onclick="Soberano.cura()" class="tab-item active" id="btn-radar"><span class="tab-icon">🔥</span>RADAR</div>
@@ -44,23 +64,25 @@
         <div onclick="Soberano.abaCharts()" class="tab-item" id="btn-charts"><span class="tab-icon">📈</span>CHARTS</div>
     </div>
 
-    <script src="sovereign-core.js?v=FIX_ICON_VERSION"></script>
+    <script src="sovereign-core.js?v=SPLASH_V1"></script>
     <script>
         window.onload = () => {
             if (typeof Soberano !== 'undefined') {
                 Soberano.cura();
-            } else {
-                document.getElementById('app-content').innerHTML = "<h1 style='text-align:center; margin-top:50px;'>Erro de Core</h1>";
+                // Remove a splash após 1.5 segundos para simular o carregamento do sinal
+                setTimeout(() => {
+                    const s = document.getElementById('splash');
+                    s.style.opacity = '0';
+                    setTimeout(() => s.style.display = 'none', 500);
+                }, 1500);
             }
         };
 
-        // Gatilho do Portal (3 segundos segurando no portal cinza)
         let timer;
-        const trigger = document.getElementById('portal-trigger');
-        trigger.addEventListener('touchstart', () => {
+        document.getElementById('portal-trigger').addEventListener('touchstart', () => {
             timer = setTimeout(() => { window.location.href = 'dashboard.html'; }, 3000);
         });
-        trigger.addEventListener('touchend', () => clearTimeout(timer));
+        document.getElementById('portal-trigger').addEventListener('touchend', () => clearTimeout(timer));
     </script>
 </body>
 </html>
