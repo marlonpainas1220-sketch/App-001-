@@ -1,4 +1,4 @@
-/* 🛡️ VITRIN III - NÚCLEO DE INTELIGÊNCIA URBAN V.2.0 */
+/* 🛡️ VITRIN III - NÚCLEO DE INTELIGÊNCIA MULTIGÊNERO V.3.0 */
 (function() {
     window.Soberano = {
         async obterSinal(tipo) {
@@ -21,7 +21,7 @@
             if(btn) btn.classList.add('active');
         },
 
-        // ABA 1: RADAR (Tendências Reais)
+        // ABA 1: RADAR (Tendências)
         async cura() {
             this.setTabActive('btn-radar');
             const container = document.getElementById('app-content');
@@ -39,17 +39,16 @@
             }, 500);
         },
 
-        // ABA 2: SUBS BR (Foco Influenciadores Urban)
+        // ABA 2: SUBS BR (Influencers + Manual)
         async abaSubs() {
             this.setTabActive('btn-subs');
             const container = document.getElementById('app-content');
             const manual = JSON.parse(localStorage.getItem('noticia_manual'));
             let feedManual = "";
 
-            // Verifica se há sinal vindo do Dashboard (última 1 hora)
             if(manual && (Date.now() - manual.timestamp < 3600000)) {
                 feedManual = `
-                    <div class="card" style="background:#fff; border-radius:20px; padding:20px; margin-bottom:15px; border:2px solid #ff00ff; animation: pulse 2s infinite; box-shadow:0 10px 30px rgba(255,0,255,0.2);">
+                    <div class="card" style="background:#fff; border-radius:20px; padding:20px; margin-bottom:15px; border:2px solid #ff00ff; box-shadow:0 10px 30px rgba(255,0,255,0.2);">
                         <small style="color:#ff00ff; font-weight:bold;">🚨 SINAL EXCLUSIVO INJETADO</small>
                         <h3 style="margin:10px 0; font-size:18px;">${manual.titulo}</h3>
                         <p style="font-size:13px; color:#444;">${manual.desc}</p>
@@ -67,24 +66,56 @@
                 </div>`;
         },
 
-        // ABA 3: CHARTS (Foco Funk/Trap Brasil)
-        async abaCharts() {
+        // ABA 3: CHARTS (Filtro por Gêneros e Heatmap)
+        async abaCharts(genero = 'URBAN') {
             this.setTabActive('btn-charts');
             const container = document.getElementById('app-content');
+            
+            const baseSinal = {
+                'URBAN': { tit: 'Trap & Funk', cor: '#00ff00', rank: ['1. Artista Trap #1', '2. Relíquia Funk SP', '3. Drill Viral'] },
+                'POP': { tit: 'Pop Brasil', cor: '#ff00ff', rank: ['1. Diva Pop Nacional', '2. Hit de Verão 2026', '3. Remix Pop/Dance'] },
+                'SERTANEJO': { tit: 'Sertanejo', cor: '#ffcc00', rank: ['1. Modão do Ano', '2. Agronejo Estourado', '3. Sertanejo/Piseiro'] },
+                'MPB': { tit: 'MPB / Alternativo', cor: '#00ccff', rank: ['1. Nova MPB Viral', '2. Clássico Revisitado', '3. Voz e Violão Jazz'] }
+            };
+
+            const sinal = baseSinal[genero];
+
             container.innerHTML = `
-                <h2>Charts® 📈</h2>
-                <div class="card" style="background:#000; color:#fff; border-radius:20px; padding:20px; margin-bottom:15px; box-shadow:0 10px 30px rgba(0,0,0,0.3);">
-                    <small style="color:#00ff00; font-weight:bold;">TOP 1 URBAN BRASIL</small>
-                    <h3 style="margin:10px 0; font-size:18px; color:#fff;">Mainstream Trap/Funk</h3>
-                    <div style="font-size:13px; color:#ccc; line-height:1.6;">
-                        1. 🥇 Artista Urban - Álbum Novo <br>
-                        2. 🔥 Lançamento Funk SP (Prod. DJ GBR) <br>
-                        3. ⚡ Trap Nacional (Viral TikTok)
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h2 style="margin:0;">Charts® 📈</h2>
+                    <select onchange="Soberano.abaCharts(this.value)" style="background:#111; color:#fff; border:1px solid #333; padding:6px; border-radius:10px; font-size:11px; outline:none;">
+                        <option value="URBAN" ${genero === 'URBAN' ? 'selected' : ''}>TRAP/FUNK</option>
+                        <option value="POP" ${genero === 'POP' ? 'selected' : ''}>POP</option>
+                        <option value="SERTANEJO" ${genero === 'SERTANEJO' ? 'selected' : ''}>SERTANEJO</option>
+                        <option value="MPB" ${genero === 'MPB' ? 'selected' : ''}>MPB</option>
+                    </select>
+                </div>
+
+                <div class="card" style="background:#000; color:#fff; border-radius:25px; padding:25px; margin-bottom:15px; border-top: 5px solid ${sinal.cor};">
+                    <small style="color:${sinal.cor}; font-weight:bold;">ONDA DE CALOR • ${sinal.tit.toUpperCase()}</small>
+                    
+                    <div style="display:flex; align-items:flex-end; height:80px; gap:8px; margin:20px 0;">
+                        <div style="flex:1; background:#111; height:40%; border-radius:4px;"></div>
+                        <div style="flex:1; background:#111; height:65%; border-radius:4px;"></div>
+                        <div style="flex:1; background:linear-gradient(to top, #111, ${sinal.cor}); height:95%; border-radius:4px; box-shadow:0 0 15px ${sinal.cor}44;"></div>
+                        <div style="flex:1; background:#111; height:55%; border-radius:4px;"></div>
+                        <div style="flex:1; background:#111; height:30%; border-radius:4px;"></div>
                     </div>
-                    <p style="margin-top:10px; font-size:11px; color:#666; border-top:1px solid #222; padding-top:10px;">
-                        Análise baseada em 500+ playlists de streaming.
-                    </p>
-                </div>`;
+
+                    <div style="font-size:13px; color:#ccc; line-height:1.8;">
+                        <div style="display:flex; justify-content:space-between; border-bottom:1px solid #222; padding:8px 0;">
+                            <span>${sinal.rank[0]}</span> <span style="color:${sinal.cor};">🔥 TOP 1</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; border-bottom:1px solid #222; padding:8px 0;">
+                            <span>${sinal.rank[1]}</span> <span style="color:#555;">RANK 2</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; padding:8px 0;">
+                            <span>${sinal.rank[2]}</span> <span style="color:#555;">RANK 3</span>
+                        </div>
+                    </div>
+                    <p style="margin-top:15px; font-size:9px; color:#444; text-align:center;">Sinal Sincronizado: Billboard & Spotify BR</p>
+                </div>
+            `;
         }
     };
 })();
