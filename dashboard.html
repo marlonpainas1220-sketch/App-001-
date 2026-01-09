@@ -3,27 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bunker ADM</title>
+    <title>VITRIN III - Dashboard</title>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; padding: 30px; }
-        .box { border: 1px solid #333; padding: 20px; border-radius: 15px; background: #111; }
-        .status { color: #00ff00; font-weight: bold; }
-        .btn { background: #fff; color: #000; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; margin-top: 20px; }
+        body { font-family: sans-serif; padding: 20px; background: #1a1a1a; color: #fff; }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; box-sizing: border-box; }
+        button { background: #00ff00; color: #000; padding: 15px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .preview { background: #333; padding: 15px; border-radius: 10px; margin-top: 20px; font-size: 12px; color: #bbb; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h2>Painel Soberano</h2>
-        <p>Status: <span id="st">CONECTANDO...</span></p>
-        <button class="btn" onclick="rodarScan()">VARREDURA DE CÓDIGO</button>
-    </div>
-
-    <script src="sovereign-core.js"></script>
+    <h2>🕹️ Painel de Controle Soberano</h2>
+    <input type="text" id="titulo" placeholder="Título (ex: MC IG em destaque)">
+    <textarea id="desc" rows="3" placeholder="Descrição da fofoca ou lançamento..."></textarea>
+    <input type="number" id="hype" placeholder="Hype % (ex: 120)">
+    <button onclick="lancar()">LANÇAR NO SINAL</button>
+    <div class="preview">Segure o portal cinza no topo do app por 3s para voltar aqui.</div>
     <script>
-        async function rodarScan() {
-            const ok = await Soberano.check();
-            document.getElementById('st').innerText = ok ? "100% PROTEGIDO" : "ERRO NA CHAVE";
-            if(ok) alert("Varredura Concluída: Repositório App-001- está íntegro.");
+        function lancar() {
+            const data = {
+                titulo: document.getElementById('titulo').value,
+                desc: document.getElementById('desc').value,
+                hype: document.getElementById('hype').value,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('noticia_manual', JSON.stringify(data));
+            alert("Sinal Injetado! Confira a aba SUBS BR no app.");
         }
     </script>
 </body>
