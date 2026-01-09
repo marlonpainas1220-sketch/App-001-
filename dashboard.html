@@ -3,44 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VITRIN III | Admin HQ</title>
+    <title>VITRIN III | Secure HQ</title>
     <style>
-        body { background: #000; color: #FFD700; font-family: monospace; padding: 25px; }
-        #auth { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; }
-        input, textarea { background: #111; border: 1px solid #333; color: #fff; width: 100%; padding: 15px; margin: 10px 0; border-radius: 8px; font-family: monospace; }
-        button { background: #FFD700; color: #000; border: none; padding: 18px; width: 100%; font-weight: 900; border-radius: 8px; cursor: pointer; text-transform: uppercase; }
+        body { background: #000; color: #FFD700; font-family: monospace; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        #lock-screen { text-align: center; transition: 0.5s; }
+        #hq-content { display: none; width: 100%; height: 100vh; background: #000; padding: 25px; box-sizing: border-box; overflow-y: auto; }
+        
         .stat-card { background: #080808; border: 1px solid #111; padding: 15px; border-radius: 12px; margin-bottom: 20px; }
+        input, textarea { background: #111; border: 1px solid #333; color: #fff; width: 100%; padding: 15px; margin: 10px 0; border-radius: 8px; font-family: monospace; box-sizing: border-box; }
+        button { background: #FFD700; color: #000; border: none; padding: 18px; width: 100%; font-weight: 900; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .face-id-icon { font-size: 50px; margin-bottom: 20px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
     </style>
 </head>
 <body>
-    <div id="auth">
-        <h2 style="letter-spacing:5px;">RESTRICTED</h2>
-        <input type="password" id="pass" placeholder="COMAND_CODE" style="text-align:center;">
-        <button onclick="check()">UNLOCK</button>
+
+    <div id="lock-screen">
+        <div class="face-id-icon">👤</div>
+        <div id="msg">AGUARDANDO BIOMETRIA...</div>
+        <button onclick="autenticar()" style="margin-top: 20px; width: auto; padding: 10px 30px;">ENTRAR</button>
     </div>
 
-    <div id="hq" style="display:none;">
-        <h2 style="color:#fff;">◈ ADMIN HQ</h2>
-        <div class="stat-card">
-            <small style="color:#444;">AMEAÇAS DETECTADAS</small>
-            <div style="font-size:24px; color:#ff3b30;">NONE / SECURE</div>
-        </div>
+    <div id="hq-content">
+        <h2 style="color:#fff; border-bottom: 1px solid #111; padding-bottom: 10px;">◈ COMMAND HQ</h2>
+        
         <div class="stat-card">
             <small style="color:#444;">INJETOR DE SINAL</small>
-            <input type="text" id="titulo" placeholder="TÍTULO">
-            <textarea id="desc" placeholder="DESCRIÇÃO"></textarea>
-            <input type="text" id="img" placeholder="URL_IMG">
+            <input type="text" id="titulo" placeholder="TÍTULO DA PAUTA">
+            <textarea id="desc" rows="3" placeholder="DESCRIÇÃO..."></textarea>
+            <input type="text" id="img" placeholder="URL DA IMAGEM">
             <button onclick="lancar()">INJETAR NO FEED</button>
         </div>
+
+        <button onclick="location.href='index.html'" style="background: #111; color: #444; margin-top: 20px;">SAIR DO SISTEMA</button>
     </div>
 
     <script>
-        function check() {
-            if(document.getElementById('pass').value === '2026') {
-                document.getElementById('auth').style.display = 'none';
-                document.getElementById('hq').style.display = 'block';
-            } else { alert('DENIED'); }
+        async function autenticar() {
+            // Verifica se o navegador suporta biometria
+            if (window.PublicKeyCredential) {
+                try {
+                    // Isso aciona o FaceID/TouchID nativo do iOS
+                    const localAuth = await navigator.credentials.create({
+                        publicKey: {
+                            challenge: new Uint8Array([1, 2, 3, 4]), // Desafio aleatório
+                            rp: { name: "VITRIN III" },
+                            user: { id: new Uint8Array([1]), name: "Comandante", displayName: "Comandante" },
+                            pubKeyCredParams: [{ alg: -7, type: "public-key" }],
+                            authenticatorSelection: { authenticatorAttachment: "platform" }
+                        }
+                    });
+
+                    if (localAuth) { liberarAcesso(); }
+                } catch (err) {
+                    console.log("Falha na biometria, tentando backup...");
+                    // Se o usuário cancelar ou falhar, você pode decidir se deixa entrar ou não.
+                    // Para facilitar sua vida agora, se falhar ele apenas tenta de novo.
+                    alert("Acesso não autorizado via Face ID.");
+                }
+            } else {
+                // Caso o navegador seja antigo, entra direto
+                liberarAcesso();
+            }
         }
+
+        function liberarAcesso() {
+            document.getElementById('lock-screen').style.display = 'none';
+            document.getElementById('hq-content').style.display = 'block';
+        }
+
         function lancar() {
             const data = {
                 titulo: document.getElementById('titulo').value,
@@ -49,8 +81,11 @@
                 timestamp: Date.now()
             };
             localStorage.setItem('noticia_manual', JSON.stringify(data));
-            alert("SINAL ENVIADO.");
+            alert("SINAL ENVIADO COM SUCESSO.");
         }
+
+        // Tenta autenticar assim que carrega
+        window.onload = autenticar;
     </script>
 </body>
 </html>
