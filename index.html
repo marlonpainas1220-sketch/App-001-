@@ -3,55 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>VITRIN III | Sovereign Persona</title>
+    <title>VITRIN III | Electric Yellow</title>
     <link rel="apple-touch-icon" href="icon.png.JPG">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style>
-        :root { --gold: #FFD700; --bg: #000; --card: #111; --border: #222; --text-dim: #999; }
+        :root { --yellow: #FFFF00; --bg: #000; --card: #111; --border: #222; --text-dim: #888; }
         * { -webkit-touch-callout: none; -webkit-user-select: none; box-sizing: border-box; outline: none; }
         input, textarea { -webkit-user-select: text; user-select: text; }
-        body { margin: 0; font-family: -apple-system, sans-serif; background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; }
+        body { margin: 0; font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: #fff; padding-bottom: 90px; }
         
-        /* Splash Persona 3D */
-        #splash { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10000; transition: 0.8s ease-in-out; }
-        .persona-logo { width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold); box-shadow: 0 0 40px rgba(255, 215, 0, 0.4); object-fit: cover; }
+        /* Splash Screen Amarela */
+        #splash { position: fixed; inset: 0; background: var(--yellow); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10000; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
+        .persona-logo { width: 160px; height: 160px; border-radius: 50%; border: 5px solid #000; object-fit: cover; box-shadow: 0 0 30px rgba(0,0,0,0.3); }
 
-        /* Nav */
-        .nav-main { height: 65px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; position: sticky; top: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 1000; border-bottom: 1px solid var(--border); }
-        .portal-v3 { width: 30px; height: 4px; background: #333; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+        /* Nav Header */
+        .nav-main { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; position: sticky; top: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); z-index: 1000; border-bottom: 2px solid var(--yellow); }
+        .portal-v3 { width: 35px; height: 5px; background: #333; border-radius: 10px; cursor: pointer; }
         
-        /* Abas */
-        .tab-menu { display: flex; width: 100%; border-bottom: 1px solid var(--border); background: #000; position: sticky; top: 65px; z-index: 999; }
-        .tab-item { flex: 1; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: var(--text-dim); position: relative; }
-        .tab-item.active { color: #fff; }
-        .tab-item.active::after { content: ''; position: absolute; bottom: 0; width: 50%; height: 3px; background: var(--gold); border-radius: 2px; }
+        /* Abas Estilo Yellow */
+        .tab-menu { display: flex; width: 100%; border-bottom: 1px solid var(--border); background: #000; position: sticky; top: 70px; z-index: 999; }
+        .tab-item { flex: 1; height: 55px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .tab-item.active { color: var(--yellow); border-bottom: 3px solid var(--yellow); }
 
-        /* Cards */
+        /* Feed */
         #app-content { padding: 15px; }
-        .news-card { background: var(--card); border-radius: 24px; margin-bottom: 25px; overflow: hidden; border: 1px solid var(--border); animation: slideUp 0.5s ease-out; }
-        @keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
-        .card-img { width: 100%; height: 220px; object-fit: cover; }
+        .news-card { background: var(--card); border-radius: 28px; margin-bottom: 30px; overflow: hidden; border: 1px solid var(--border); }
+        .card-img { width: 100%; height: 240px; object-fit: cover; border-bottom: 2px solid var(--yellow); }
         .card-body { padding: 20px; }
-        .card-persona { width: 30px; height: 30px; border-radius: 50%; background-image: url('icon.png.JPG'); background-size: cover; border: 1px solid var(--gold); }
+        .card-persona { width: 35px; height: 35px; border-radius: 50%; background-image: url('icon.png.JPG'); background-size: cover; border: 2px solid var(--yellow); }
         
-        /* Footer */
-        .bottom-bar { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom); }
+        /* Menu Inferior Amarelo */
+        .bottom-bar { position: fixed; bottom: 0; width: 100%; height: 70px; background: #000; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom); }
+        .menu-icon { font-size: 26px; color: #444; }
+        .menu-icon.active { color: var(--yellow); text-shadow: 0 0 10px var(--yellow); }
     </style>
 </head>
 <body oncontextmenu="return false;">
     <div id="splash">
         <img src="icon.png.JPG" class="persona-logo">
-        <div style="margin-top:20px; color:var(--gold); font-weight:900; letter-spacing:4px;">VITRIN III</div>
+        <div style="margin-top:25px; color:#000; font-weight:900; letter-spacing:5px; font-size:16px;">VITRIN III</div>
     </div>
     
     <div class="nav-main">
-        <div style="font-weight:900; font-size:20px; letter-spacing:-1px;">VITRIN<span style="color:var(--gold)">III</span></div>
+        <div style="font-weight:900; font-size:22px; color:var(--yellow);">VITRIN III</div>
         <div class="portal-v3" id="portal-trigger"></div>
     </div>
 
     <div class="tab-menu">
-        <div class="tab-item active" id="t-hype" onclick="Soberano.abaHype()">Hype Feed</div>
+        <div class="tab-item active" id="t-hype" onclick="Soberano.abaHype()">Hype</div>
         <div class="tab-item" id="t-subs" onclick="Soberano.abaSubs()">Subcelebs</div>
         <div class="tab-item" id="t-trend" onclick="Soberano.abaTrend()">Trending</div>
     </div>
@@ -59,9 +59,9 @@
     <div id="app-content"></div>
 
     <div class="bottom-bar">
-        <span style="color:var(--gold); font-size:24px;">🏠</span>
-        <span style="color:#444; font-size:24px;">🔍</span>
-        <span style="color:#444; font-size:24px;">⚙️</span>
+        <span class="menu-icon active">🏠</span>
+        <span class="menu-icon">🔥</span>
+        <span class="menu-icon">⚙️</span>
     </div>
 
     <script src="sovereign-core.js"></script>
@@ -71,12 +71,12 @@
             if (typeof Soberano !== 'undefined') { Soberano.abaHype(); }
             setTimeout(() => { 
                 const s = document.getElementById('splash');
-                s.style.opacity='0'; s.style.transform='translateY(-100%)';
+                s.style.opacity='0'; s.style.transform='scale(1.2)';
                 setTimeout(()=>s.remove(), 800); 
-            }, 2500);
+            }, 2000);
         };
         let t; const gat = document.getElementById('portal-trigger');
-        const start = (e) => { e.preventDefault(); gat.style.background="var(--gold)"; t=setTimeout(()=>location.href='dashboard.html',3000); };
+        const start = (e) => { e.preventDefault(); gat.style.background="var(--yellow)"; t=setTimeout(()=>location.href='dashboard.html',3000); };
         const stop = () => { gat.style.background="#333"; clearTimeout(t); };
         gat.addEventListener('touchstart', start); gat.addEventListener('touchend', stop);
     </script>
