@@ -1,4 +1,4 @@
-/* 🛡️ VITRIN III - CORE SOBERANO V.PERSONA */
+/* 🛡️ VITRIN III - ENGINE ELECTRIC YELLOW */
 (function() {
     const BRIDGE = "https://api.rss2json.com/v1/api.json?rss_url=";
     const FEEDS = {
@@ -9,16 +9,16 @@
     const IMG_PROXY = "https://images.weserv.nl/?url=";
 
     window.Soberano = {
-        async abaHype() { this.renderizar('Hype Feed', FEEDS.HYPE, 't-hype', true); },
-        async abaSubs() { this.renderizar('Subcelebs BR', FEEDS.SUBS, 't-subs', true); },
-        async abaTrend() { this.renderizar('Trending Topics', FEEDS.TREND, 't-trend', false); },
+        async abaHype() { this.renderizar('Hype', FEEDS.HYPE, 't-hype', true); },
+        async abaSubs() { this.renderizar('Subcelebs', FEEDS.SUBS, 't-subs', true); },
+        async abaTrend() { this.renderizar('Trending', FEEDS.TREND, 't-trend', false); },
 
         async renderizar(label, url, tabId, comManual) {
             document.querySelectorAll('.tab-item').forEach(i => i.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             
             const container = document.getElementById('app-content');
-            container.innerHTML = `<div style="text-align:center; padding:50px; color:var(--gold);">Sincronizando ${label}...</div>`;
+            container.innerHTML = `<div style="text-align:center; padding:50px; color:var(--yellow); font-weight:bold;">Sincronizando ${label}...</div>`;
             
             const res = await fetch(BRIDGE + url);
             const data = await res.json();
@@ -32,7 +32,7 @@
             }
 
             if(data.items) {
-                data.items.slice(0, 12).forEach(n => {
+                data.items.slice(0, 15).forEach(n => {
                     if(tabId === 't-trend') {
                         this.buildTrend(container, n);
                     } else {
@@ -48,18 +48,18 @@
             
             if (data.img && data.img.includes('tiktok.com')) {
                 const vid = data.img.split('/').pop().split('?')[0];
-                media = `<div style="width:100%; border-radius:15px; overflow:hidden;"><blockquote class="tiktok-embed" data-video-id="${vid}"><section></section></blockquote></div>`;
+                media = `<div style="width:100%; border-radius:0; overflow:hidden; border-bottom:2px solid var(--yellow);"><blockquote class="tiktok-embed" data-video-id="${vid}"><section></section></blockquote></div>`;
             }
 
             target.innerHTML += `
                 <div class="news-card" onclick="window.open('${data.link || '#'}', '_blank')">
                     ${media}
                     <div class="card-body">
-                        <h3 style="margin:0 0 10px 0; font-size:18px;">${data.title}</h3>
-                        <p style="font-size:14px; color:var(--text-dim); line-height:1.5; margin:0;">${cleanDesc}</p>
-                        <div style="display:flex; align-items:center; gap:10px; margin-top:15px;">
-                            <div class="card-persona" style="${isOfficial ? '' : 'filter:grayscale(1); opacity:0.4;'}"></div>
-                            <span style="font-size:11px; font-weight:900; color:var(--gold);">${isOfficial ? '⚡ PERSONA VERIFIED' : 'SINAL EXTERNO'}</span>
+                        <h3 style="margin:0 0 12px 0; font-size:19px; line-height:1.2; font-weight:900;">${data.title}</h3>
+                        <p style="font-size:14px; color:var(--text-dim); line-height:1.6; margin:0;">${cleanDesc}</p>
+                        <div style="display:flex; align-items:center; gap:12px; margin-top:20px;">
+                            <div class="card-persona" style="${isOfficial ? '' : 'filter:grayscale(1); opacity:0.3;'}"></div>
+                            <span style="font-size:11px; font-weight:900; color:var(--yellow); letter-spacing:1px;">${isOfficial ? '⚡ PERSONA VERIFIED' : 'RADAR SINAL'}</span>
                         </div>
                     </div>
                 </div>`;
@@ -67,10 +67,10 @@
 
         buildTrend(target, data) {
             target.innerHTML += `
-                <div style="padding:15px; border-bottom:1px solid var(--border);" onclick="window.open('${data.link}', '_blank')">
-                    <div style="color:var(--text-dim); font-size:11px;">Trending agora no sinal</div>
-                    <div style="font-weight:700; font-size:16px; margin:4px 0;">${data.title}</div>
-                    <div style="color:var(--gold); font-size:11px; font-weight:900;">+ ${(Math.random()*100).toFixed(1)}k menções</div>
+                <div style="padding:20px; border-bottom:1px solid var(--border);" onclick="window.open('${data.link}', '_blank')">
+                    <div style="color:var(--text-dim); font-size:11px; text-transform:uppercase; font-weight:700;">Trending no Momento</div>
+                    <div style="font-weight:900; font-size:18px; margin:6px 0; color:var(--yellow);">${data.title}</div>
+                    <div style="color:#fff; font-size:12px; font-weight:bold;">🔥 ${(Math.random()*200).toFixed(1)}k visualizações</div>
                 </div>`;
         }
     };
