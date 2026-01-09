@@ -1,88 +1,69 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Vitrin III</title>
+    <title>Vitrin III | Intelligence</title>
     
     <link rel="apple-touch-icon" href="apple-touch-icon.png.JPG">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Vitrin III">
 
     <style>
-        /* TELA DE SPLASH */
-        #splash {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-        .loader {
-            width: 40px; height: 40px;
-            border: 3px solid #333;
-            border-top: 3px solid #00ff00;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        :root { --neon: #00ff00; --dark-bg: #0a0a0a; --glass: rgba(255, 255, 255, 0.03); }
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--dark-bg); color: #fff; overflow-x: hidden; }
+        
+        /* Splash Ultra-Pro */
+        #splash { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10000; transition: 0.8s cubic-bezier(0.65, 0, 0.35, 1); }
+        .logo-text { font-size: 28px; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 10px; background: linear-gradient(45deg, #fff, #555); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* UI de Intelligence */
+        .nav { height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 20px; position: sticky; top: 0; background: rgba(10,10,10,0.8); backdrop-filter: blur(20px); z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .portal-core { width: 40px; height: 6px; background: #333; border-radius: 3px; position: relative; overflow: hidden; }
+        .portal-core::after { content: ''; position: absolute; width: 30%; height: 100%; background: var(--neon); animation: scan 2s infinite; }
+        @keyframes scan { from { left: -30%; } to { left: 100%; } }
 
-        body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background: #fff; padding-bottom: 80px; }
-        .nav { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 1000; }
-        .portal { width: 100px; height: 32px; background: #f0f0f0; border-radius: 16px; cursor: pointer; }
-        .status-badge { font-size: 10px; background: #00ff00; color: #000; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
-        #app-content { padding: 20px; min-height: 80vh; }
-        .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; padding-bottom: env(safe-area-inset-bottom); }
-        .tab-item { text-align: center; color: #999; font-size: 10px; font-weight: bold; cursor: pointer; }
-        .tab-item.active { color: #000; }
-        .tab-icon { font-size: 20px; display: block; margin-bottom: 2px; }
+        .status-pill { font-size: 9px; border: 1px solid var(--neon); color: var(--neon); padding: 2px 8px; border-radius: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+        
+        #app-content { padding: 20px; padding-top: 10px; }
+        
+        /* Cards Profissionais */
+        .card { background: var(--glass); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 20px; margin-bottom: 20px; backdrop-filter: blur(10px); }
+        
+        .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 85px; background: rgba(15,15,15,0.9); backdrop-filter: blur(30px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
+        .tab-item { color: #555; font-size: 10px; font-weight: 800; letter-spacing: 1px; display: flex; flex-direction: column; align-items: center; transition: 0.3s; }
+        .tab-item.active { color: var(--neon); text-shadow: 0 0 15px var(--neon); }
+        .tab-icon { font-size: 22px; margin-bottom: 4px; }
     </style>
 </head>
 <body>
 
     <div id="splash">
-        <div style="color:#fff; font-size:24px; font-weight:900; letter-spacing:-1px; margin-bottom:20px;">VITRIN III</div>
-        <div class="loader"></div>
-        <div style="color:#555; font-size:10px; margin-top:20px; font-weight:bold;">SINCRO-NIZANDO NÚCLEO...</div>
+        <div class="logo-text">VITRIN III</div>
+        <div class="status-pill" style="border:none;">BOOTING SOBERANO CORE...</div>
     </div>
 
     <div class="nav">
-        <div style="font-weight: 900; font-size: 18px;">VITRIN III <span class="status-badge" id="shield-status">ON</span></div>
-        <div class="portal" id="portal-trigger"></div>
+        <div style="font-weight: 900; font-size: 20px; letter-spacing: -1px;">VITRIN <span class="status-pill">Active</span></div>
+        <div class="portal-core" id="portal-trigger"></div>
     </div>
     
     <div id="app-content"></div>
 
     <div class="tab-bar">
-        <div onclick="Soberano.cura()" class="tab-item active" id="btn-radar"><span class="tab-icon">🔥</span>RADAR</div>
-        <div onclick="Soberano.abaSubs()" class="tab-item" id="btn-subs"><span class="tab-icon">🎤</span>SUBS BR</div>
-        <div onclick="Soberano.abaCharts()" class="tab-item" id="btn-charts"><span class="tab-icon">📈</span>CHARTS</div>
+        <div onclick="Soberano.cura()" class="tab-item active" id="btn-radar"><span class="tab-icon">◈</span>RADAR</div>
+        <div onclick="Soberano.abaSubs()" class="tab-item" id="btn-subs"><span class="tab-icon">◎</span>SUBS BR</div>
+        <div onclick="Soberano.abaCharts()" class="tab-item" id="btn-charts"><span class="tab-icon">⌬</span>CHARTS</div>
     </div>
 
-    <script src="sovereign-core.js?v=SPLASH_V1"></script>
+    <script src="sovereign-core.js?v=ULTRA_PRO"></script>
     <script>
         window.onload = () => {
-            if (typeof Soberano !== 'undefined') {
-                Soberano.cura();
-                // Remove a splash após 1.5 segundos para simular o carregamento do sinal
-                setTimeout(() => {
-                    const s = document.getElementById('splash');
-                    s.style.opacity = '0';
-                    setTimeout(() => s.style.display = 'none', 500);
-                }, 1500);
-            }
+            if (typeof Soberano !== 'undefined') { Soberano.cura(); }
+            setTimeout(() => { document.getElementById('splash').style.opacity = '0'; setTimeout(() => document.getElementById('splash').remove(), 800); }, 2000);
         };
-
-        let timer;
-        document.getElementById('portal-trigger').addEventListener('touchstart', () => {
-            timer = setTimeout(() => { window.location.href = 'dashboard.html'; }, 3000);
-        });
-        document.getElementById('portal-trigger').addEventListener('touchend', () => clearTimeout(timer));
+        let t; document.getElementById('portal-trigger').addEventListener('touchstart', () => { t = setTimeout(() => location.href='dashboard.html', 3000); });
+        document.getElementById('portal-trigger').addEventListener('touchend', () => clearTimeout(t));
     </script>
 </body>
 </html>
