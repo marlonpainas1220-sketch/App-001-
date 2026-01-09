@@ -3,87 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>VITRIN III | Persona</title>
+    <title>VITRIN III | Sovereign Persona</title>
     <link rel="apple-touch-icon" href="icon.png.JPG">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style>
-        :root { --gold: #FFD700; --bg: #000; --card-bg: #111; --border: #222; --text-dim: #999; }
-        * { -webkit-touch-callout: none; -webkit-user-select: none; box-sizing: border-box; }
-        body { margin: 0; font-family: 'SF Pro Display', -apple-system, sans-serif; background: var(--bg); color: #fff; padding-bottom: 90px; }
+        :root { --gold: #FFD700; --bg: #000; --card: #111; --border: #222; --text-dim: #999; }
+        * { -webkit-touch-callout: none; -webkit-user-select: none; box-sizing: border-box; outline: none; }
+        input, textarea { -webkit-user-select: text; user-select: text; }
+        body { margin: 0; font-family: -apple-system, sans-serif; background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; }
         
-        /* Splash com Persona 3D */
+        /* Splash Persona 3D */
         #splash { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10000; transition: 0.8s ease-in-out; }
-        .persona-logo { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold); box-shadow: 0 0 40px rgba(255, 215, 0, 0.4); }
-        .splash-text { margin-top: 20px; color: var(--gold); letter-spacing: 3px; font-weight: 900; font-size: 14px; }
+        .persona-logo { width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold); box-shadow: 0 0 40px rgba(255, 215, 0, 0.4); object-fit: cover; }
 
-        /* Header Minimalista */
-        .nav-main { height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; position: sticky; top: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid var(--border); }
-        .app-title { font-weight: 800; font-size: 20px; }
-        .portal-trigger { width: 30px; height: 4px; background: #333; border-radius: 10px; cursor: pointer; }
+        /* Nav */
+        .nav-main { height: 65px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; position: sticky; top: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 1000; border-bottom: 1px solid var(--border); }
+        .portal-v3 { width: 30px; height: 4px; background: #333; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+        
+        /* Abas */
+        .tab-menu { display: flex; width: 100%; border-bottom: 1px solid var(--border); background: #000; position: sticky; top: 65px; z-index: 999; }
+        .tab-item { flex: 1; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: var(--text-dim); position: relative; }
+        .tab-item.active { color: #fff; }
+        .tab-item.active::after { content: ''; position: absolute; bottom: 0; width: 50%; height: 3px; background: var(--gold); border-radius: 2px; }
 
-        /* Abas de Navegação (Para o Trending Topics) */
-        .tab-menu { display: flex; width: 100%; border-bottom: 1px solid var(--border); background: #000; }
-        .tab-menu-item { flex: 1; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: var(--text-dim); position: relative; }
-        .tab-menu-item.active { color: #fff; }
-        .tab-menu-item.active::after { content: ''; position: absolute; bottom: 0; width: 60px; height: 3px; background: var(--gold); border-radius: 1.5px; }
-
-        /* Cartões de Notícia (Estilo Persona) */
-        #app-content { padding: 20px; }
-        .news-card { background: var(--card-bg); border-radius: 20px; margin-bottom: 25px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
-        .card-image { width: 100%; height: 200px; object-fit: cover; background: #000; border-bottom: 1px solid var(--border); }
+        /* Cards */
+        #app-content { padding: 15px; }
+        .news-card { background: var(--card); border-radius: 24px; margin-bottom: 25px; overflow: hidden; border: 1px solid var(--border); animation: slideUp 0.5s ease-out; }
+        @keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+        .card-img { width: 100%; height: 220px; object-fit: cover; }
         .card-body { padding: 20px; }
-        .card-title { font-size: 18px; font-weight: 700; line-height: 1.4; margin-bottom: 10px; }
-        .card-desc { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
-        .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 15px; font-size: 13px; color: var(--text-dim); }
-        .card-persona-avatar { width: 30px; height: 30px; border-radius: 50%; background-image: url('icon.png.JPG'); background-size: cover; border: 1px solid var(--gold); }
-        .verified-badge { color: var(--gold); font-weight: 700; font-size: 12px; }
-
-        /* Menu Inferior */
-        .bottom-menu { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom); }
-        .menu-item { font-size: 26px; color: #555; }
-        .menu-item.active { color: var(--gold); }
+        .card-persona { width: 30px; height: 30px; border-radius: 50%; background-image: url('icon.png.JPG'); background-size: cover; border: 1px solid var(--gold); }
+        
+        /* Footer */
+        .bottom-bar { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom); }
     </style>
 </head>
 <body oncontextmenu="return false;">
     <div id="splash">
         <img src="icon.png.JPG" class="persona-logo">
-        <div class="splash-text">SOVEREIGN PERSONA</div>
+        <div style="margin-top:20px; color:var(--gold); font-weight:900; letter-spacing:4px;">VITRIN III</div>
     </div>
     
     <div class="nav-main">
-        <div class="app-title">VITRIN<span style="color:var(--gold)">III</span></div>
-        <div class="portal-trigger" id="portal-trigger"></div>
+        <div style="font-weight:900; font-size:20px; letter-spacing:-1px;">VITRIN<span style="color:var(--gold)">III</span></div>
+        <div class="portal-v3" id="portal-trigger"></div>
     </div>
 
     <div class="tab-menu">
-        <div class="tab-menu-item active" onclick="Soberano.loadPrincipal()">Hype Feed</div>
-        <div class="tab-menu-item" onclick="Soberano.loadTrending()">Trending Topics</div>
+        <div class="tab-item active" id="t-hype" onclick="Soberano.abaHype()">Hype Feed</div>
+        <div class="tab-item" id="t-subs" onclick="Soberano.abaSubs()">Subcelebs</div>
+        <div class="tab-item" id="t-trend" onclick="Soberano.abaTrend()">Trending</div>
     </div>
     
     <div id="app-content"></div>
 
-    <div class="bottom-menu">
-        <span class="menu-item active">🏠</span>
-        <span class="menu-item">🔍</span>
-        <span class="menu-item">⚙️</span>
+    <div class="bottom-bar">
+        <span style="color:var(--gold); font-size:24px;">🏠</span>
+        <span style="color:#444; font-size:24px;">🔍</span>
+        <span style="color:#444; font-size:24px;">⚙️</span>
     </div>
 
     <script src="sovereign-core.js"></script>
     <script async src="https://www.tiktok.com/embed.js"></script>
     <script>
         window.onload = () => {
-            if (typeof Soberano !== 'undefined') { Soberano.loadPrincipal(); }
+            if (typeof Soberano !== 'undefined') { Soberano.abaHype(); }
             setTimeout(() => { 
                 const s = document.getElementById('splash');
-                s.style.opacity = '0'; 
-                s.style.transform = 'translateY(-100%)'; 
+                s.style.opacity='0'; s.style.transform='translateY(-100%)';
                 setTimeout(()=>s.remove(), 800); 
             }, 2500);
         };
         let t; const gat = document.getElementById('portal-trigger');
-        gat.addEventListener('touchstart', () => { gat.style.background="var(--gold)"; t = setTimeout(()=> location.href='dashboard.html', 3000); });
-        gat.addEventListener('touchend', () => { gat.style.background="#333"; clearTimeout(t); });
+        const start = (e) => { e.preventDefault(); gat.style.background="var(--gold)"; t=setTimeout(()=>location.href='dashboard.html',3000); };
+        const stop = () => { gat.style.background="#333"; clearTimeout(t); };
+        gat.addEventListener('touchstart', start); gat.addEventListener('touchend', stop);
     </script>
 </body>
 </html>
