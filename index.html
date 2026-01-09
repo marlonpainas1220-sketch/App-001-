@@ -3,54 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>VITRIN III | Private Access</title>
+    <title>VITRIN III | Sovereign Gold</title>
     <link rel="apple-touch-icon" href="apple-touch-icon.png.JPG">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style>
-        :root { --accent: #00ff00; --bg: #050505; --card: #121212; --text-dim: #888; }
-        body { margin: 0; font-family: -apple-system, sans-serif; background: var(--bg); color: #fff; -webkit-font-smoothing: antialiased; padding-bottom: 100px; }
-        #splash { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10000; transition: 0.8s; }
-        .logo-v3 { font-size: 32px; font-weight: 900; letter-spacing: -2px; color: #fff; position: relative; }
-        .logo-v3 span { color: var(--accent); }
-        .nav { height: 90px; display: flex; align-items: center; justify-content: space-between; padding: 0 25px; position: sticky; top: 0; background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.03); }
-        .brand { font-size: 22px; font-weight: 900; letter-spacing: -1.5px; }
-        .brand span { color: var(--accent); }
-        .portal-v3 { width: 50px; height: 6px; background: #222; border-radius: 10px; position: relative; cursor: pointer; transition: 0.3s; }
+        :root { --gold: #FFD700; --yellow: #FFEA00; --bg: #1A1A1A; --card: #252525; --text-dim: #A0A0A0; }
+        * { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; outline: none; }
+        input, textarea { -webkit-user-select: text; user-select: text; }
+        body { margin: 0; font-family: -apple-system, sans-serif; background: var(--bg); color: #fff; padding-bottom: 100px; overflow-x: hidden; }
+        
+        /* Splash Animada */
+        #splash { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10000; transition: 1s ease-in-out; }
+        .logo-anim { font-size: 42px; font-weight: 900; letter-spacing: -2px; color: var(--gold); animation: pulseLogo 2s infinite; }
+        @keyframes pulseLogo { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px var(--gold)); } 50% { transform: scale(1.05); filter: drop-shadow(0 0 20px var(--yellow)); } }
+
+        .nav { height: 90px; display: flex; align-items: center; justify-content: space-between; padding: 0 25px; position: sticky; top: 0; background: rgba(26,26,26,0.95); backdrop-filter: blur(20px); z-index: 1000; border-bottom: 1px solid rgba(255,215,0,0.1); }
+        .brand { font-size: 24px; font-weight: 900; color: var(--gold); letter-spacing: -1px; }
+        .portal-v3 { width: 45px; height: 6px; background: #333; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+        
         #app-content { padding: 20px; }
-        .feed-label { font-size: 10px; font-weight: 900; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; display: block; }
-        .card-fofoca { background: var(--card); border-radius: 28px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.03); overflow: hidden; position: relative; }
-        .hype-badge { position: absolute; top: 15px; right: 15px; font-size: 9px; font-weight: 900; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); padding: 5px 10px; border-radius: 10px; color: #fff; z-index: 2; }
-        .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 85px; background: rgba(10,10,10,0.95); backdrop-filter: blur(30px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
-        .tab-item { color: #444; font-size: 9px; font-weight: 900; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
-        .tab-item.active { color: #fff; }
-        .tab-icon { font-size: 22px; margin-bottom: 4px; }
+        .feed-label { font-size: 11px; font-weight: 900; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; display: block; }
+        
+        .card-fofoca { background: var(--card); border-radius: 24px; margin-bottom: 25px; border: 1px solid rgba(255,215,0,0.05); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4); animation: slideUp 0.5s ease-out; position: relative; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .hype-badge { position: absolute; top: 15px; right: 15px; font-size: 10px; font-weight: 900; background: var(--yellow); padding: 5px 12px; border-radius: 10px; color: #000; z-index: 5; }
+
+        .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 85px; background: #111; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255,215,0,0.1); padding-bottom: 15px; }
+        .tab-item { color: #555; font-size: 9px; font-weight: 900; display: flex; flex-direction: column; align-items: center; }
+        .tab-item.active { color: var(--gold); }
+        .tab-icon { font-size: 24px; margin-bottom: 4px; }
     </style>
 </head>
-<body>
-    <div id="splash"><div class="logo-v3">VITRIN<span>III</span></div></div>
+<body oncontextmenu="return false;">
+    <div id="splash">
+        <div class="logo-anim">VITRIN III</div>
+        <div style="color:var(--text-dim); font-size:10px; margin-top:20px; letter-spacing:4px;">SOVEREIGN GOLD V1</div>
+    </div>
+    
     <div class="nav">
-        <div class="brand">VITRIN<span>III</span></div>
+        <div class="brand">VITRIN III</div>
         <div class="portal-v3" id="portal-trigger"></div>
     </div>
+    
     <div id="app-content"></div>
+
     <div class="tab-bar">
         <div onclick="Soberano.cura()" class="tab-item active" id="btn-radar"><span class="tab-icon">◈</span>RADAR</div>
         <div onclick="Soberano.abaSubs()" class="tab-item" id="btn-subs"><span class="tab-icon">◎</span>SUBS</div>
         <div onclick="Soberano.abaCharts()" class="tab-item" id="btn-charts"><span class="tab-icon">⌬</span>CHARTS</div>
     </div>
-    <script src="sovereign-core.js?v=MASTER_V1"></script>
+
+    <script src="sovereign-core.js"></script>
     <script>
         window.onload = () => {
             if (typeof Soberano !== 'undefined') { Soberano.cura(); }
-            setTimeout(() => { document.getElementById('splash').style.opacity='0'; setTimeout(()=>document.getElementById('splash').remove(),800); }, 2000);
+            setTimeout(() => { 
+                const s = document.getElementById('splash');
+                s.style.opacity='0'; 
+                setTimeout(()=>s.remove(), 1000); 
+            }, 3000);
         };
-        // GATILHO ADM COM FEEDBACK
-        let t; const gat = document.getElementById('portal-trigger');
-        const start = () => { gat.style.background = "#00ff00"; t = setTimeout(()=> location.href='dashboard.html', 3000); };
-        const stop = () => { gat.style.background = "#222"; clearTimeout(t); };
-        gat.addEventListener('touchstart', start); gat.addEventListener('touchend', stop);
-        gat.addEventListener('mousedown', start); gat.addEventListener('mouseup', stop);
+        (function(){
+            let t; const gat = document.getElementById('portal-trigger');
+            const _0x1a = "\x64\x61\x73\x68\x62\x6F\x61\x72\x64\x2E\x68\x74\x6D\x6C";
+            const start = (e) => { 
+                e.preventDefault();
+                gat.style.background = "var(--gold)"; 
+                gat.style.boxShadow = "0 0 20px var(--gold)"; 
+                t = setTimeout(()=> location.href=_0x1a, 3000); 
+            };
+            const stop = () => { gat.style.background = "#333"; gat.style.boxShadow = "none"; clearTimeout(t); };
+            gat.addEventListener('touchstart', start); gat.addEventListener('touchend', stop);
+            document.onkeydown = (e) => { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey)) return false; };
+        })();
     </script>
 </body>
 </html>
