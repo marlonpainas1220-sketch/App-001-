@@ -5,64 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Vitrin III</title>
     
-    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png.JPG">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Vitrin III">
 
     <style>
-        body { 
-            margin: 0; 
-            font-family: -apple-system, system-ui, sans-serif; 
-            background: #fff; 
-            overflow-x: hidden; 
-            padding-bottom: 80px; /* Espaço para as abas */
-        }
-        
-        .nav { 
-            height: 70px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            padding: 0 20px; 
-            border-bottom: 1px solid #eee; 
-            position: sticky; 
-            top: 0; 
-            background: white; 
-            z-index: 1000; 
-        }
-
+        body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background: #fff; overflow-x: hidden; padding-bottom: 80px; }
+        .nav { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 1000; }
         .portal { width: 100px; height: 32px; background: #f0f0f0; border-radius: 16px; cursor: pointer; }
-        
-        .status-badge { 
-            font-size: 10px; 
-            background: #00ff00; 
-            color: #000; 
-            padding: 2px 8px; 
-            border-radius: 10px; 
-            font-weight: bold; 
-            vertical-align: middle;
-        }
-
+        .status-badge { font-size: 10px; background: #00ff00; color: #000; padding: 2px 8px; border-radius: 10px; font-weight: bold; vertical-align: middle; }
         #app-content { padding: 20px; min-height: 80vh; }
 
-        /* Estilo das Abas Inferiores (iPhone Style) */
-        .tab-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 70px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid #eee;
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-
-        .tab-item { text-align: center; color: #999; font-size: 10px; font-weight: bold; text-decoration: none; }
+        /* Abas Inferiores */
+        .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; padding-bottom: env(safe-area-inset-bottom); }
+        .tab-item { text-align: center; color: #999; font-size: 10px; font-weight: bold; text-decoration: none; border: none; background: none; }
         .tab-item.active { color: #000; }
         .tab-icon { font-size: 20px; display: block; margin-bottom: 2px; }
     </style>
@@ -82,12 +39,12 @@
     </div>
 
     <div class="tab-bar">
-        <a href="#" class="tab-item active"><span class="tab-icon">🔥</span>RADAR</a>
-        <a href="#" class="tab-item"><span class="tab-icon">🎤</span>SUBS BR</a>
-        <a href="#" class="tab-item"><span class="tab-icon">📈</span>CHARTS</a>
+        <div onclick="Soberano.cura()" class="tab-item active" id="btn-radar"><span class="tab-icon">🔥</span>RADAR</div>
+        <div onclick="Soberano.abaSubs()" class="tab-item" id="btn-subs"><span class="tab-icon">🎤</span>SUBS BR</div>
+        <div onclick="Soberano.abaCharts()" class="tab-item" id="btn-charts"><span class="tab-icon">📈</span>CHARTS</div>
     </div>
 
-    <script src="sovereign-core.js?v=FORCED_RESET_2026"></script>
+    <script src="sovereign-core.js?v=FIX_ICON_VERSION"></script>
     <script>
         window.onload = () => {
             if (typeof Soberano !== 'undefined') {
@@ -97,12 +54,13 @@
             }
         };
 
-        // Gatilho do Portal
+        // Gatilho do Portal (3 segundos segurando no portal cinza)
         let timer;
-        document.getElementById('portal-trigger').addEventListener('touchstart', () => {
+        const trigger = document.getElementById('portal-trigger');
+        trigger.addEventListener('touchstart', () => {
             timer = setTimeout(() => { window.location.href = 'dashboard.html'; }, 3000);
         });
-        document.getElementById('portal-trigger').addEventListener('touchend', () => clearTimeout(timer));
+        trigger.addEventListener('touchend', () => clearTimeout(timer));
     </script>
 </body>
 </html>
