@@ -1,5 +1,14 @@
-/* 🛡️ VITRIN III - CORE SOBERANO MASTER V1 */
+ /* 🛡️ VITRIN III - NÚCLEO AUTÔNOMO V.GOLD_2026 */
 (function() {
+    const PROXY = "https://api.allorigins.win/get?url=";
+    const IMG_PROXY = "https://images.weserv.nl/?url=";
+    
+    // Canais de Inteligência (Fontes)
+    const FEEDS = {
+        SUBS: "https://noticiasdatv.uol.com.br/rss/celebridades",
+        RADAR: "https://g1.globo.com/rss/g1/pop-arte/"
+    };
+
     window.Soberano = {
         setTabActive(id) {
             document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active'));
@@ -7,92 +16,94 @@
             if(btn) btn.classList.add('active');
         },
 
-        // RADAR - TENDÊNCIAS X/TV
+        // Função para buscar e limpar notícias reais
+        async buscarNoticias(url) {
+            try {
+                const response = await fetch(PROXY + encodeURIComponent(url));
+                const data = await response.json();
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(data.contents, "text/xml");
+                const items = xml.querySelectorAll("item");
+                
+                return Array.from(items).map(item => ({
+                    titulo: item.querySelector("title").textContent,
+                    desc: item.querySelector("description").textContent.replace(/<[^>]*>?/gm, '').substring(0, 100) + "...",
+                    link: item.querySelector("link").textContent,
+                    img: item.querySelector("enclosure")?.getAttribute("url") || 
+                         item.querySelector("content")?.getAttribute("url") || 
+                         "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=600"
+                }));
+            } catch (e) {
+                console.error("Falha no Sinal:", e);
+                return null;
+            }
+        },
+
         async cura() {
             this.setTabActive('btn-radar');
             const container = document.getElementById('app-content');
-            container.innerHTML = `
-                <span class="feed-label">Radar de Viralização</span>
-                <div class="card-fofoca">
-                    <img src="https://s2-g1.glbimg.com/lM_0X3x_K_oU_V4Y9Y9Y9Y9Y9Y9=/0x0:1920x1080/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c1284ef8973b110c211C1d/internal_photos/bs/2024/G/U/An7B3mSgA6Y8Y8Y8Y8Y8/bbb24.jpg" style="width:100%; height:200px; object-fit:cover; opacity:0.7;">
-                    <div style="padding:20px;">
-                        <span class="hype-badge">TRENDING</span>
-                        <h3 style="margin:0;">BBB26: Nova Prova do Líder</h3>
-                        <p style="font-size:13px; color:#888; margin-top:10px;">Pico de menções detectado no X (Brasil). A casa está em estado de alerta.</p>
-                    </div>
-                </div>`;
+            container.innerHTML = `<div class="status-pill" style="text-align:center; color:var(--gold);">ESCANEANDO RADAR GLOBAL...</div>`;
+            
+            const noticias = await this.buscarNoticias(FEEDS.RADAR);
+            this.renderizar(noticias, "Radar de Viralização", "TRENDING");
         },
 
-        // SUBS BR - CELEBRIDADES & INFLUENCERS
         async abaSubs() {
             this.setTabActive('btn-subs');
             const container = document.getElementById('app-content');
+            container.innerHTML = `<div class="status-pill" style="text-align:center; color:var(--gold);">SINCRONIZANDO FOFOCAS REAIS...</div>`;
+            
+            const noticias = await this.buscarNoticias(FEEDS.SUBS);
+            
+            // Injeção Manual (Sinal do ADM) tem prioridade
             const manual = JSON.parse(localStorage.getItem('noticia_manual'));
-            let feedManual = "";
-
             if(manual && (Date.now() - manual.timestamp < 3600000)) {
-                feedManual = `
-                    <div class="card-fofoca" style="border:1px solid #00ff00; background:rgba(0,255,0,0.02);">
-                        <img src="${manual.img}" style="width:100%; height:220px; object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=1000'">
-                        <div style="padding:20px;">
-                            <span class="hype-badge" style="background:#00ff00; color:#000;">🚨 EXCLUSIVO</span>
-                            <h3 style="margin:0;">${manual.titulo}</h3>
-                            <p style="font-size:13px; color:#888; margin-top:10px;">${manual.desc}</p>
-                        </div>
-                    </div>`;
+                noticias.unshift({
+                    titulo: "🚨 " + manual.titulo,
+                    desc: manual.desc,
+                    img: manual.img,
+                    badge: "EXCLUSIVO"
+                });
             }
-
-            container.innerHTML = `
-                <span class="feed-label">Fluxo Subcelebridades</span>
-                ${feedManual}
-                <div class="card-fofoca">
-                    <img src="https://cdn.moneytimes.com.br/upload/2023/07/virginia-fonseca-ze-felipe-mansao.png" style="width:100%; height:220px; object-fit:cover;">
-                    <div style="padding:20px;">
-                        <span class="hype-badge">MANSÃO</span>
-                        <h3 style="margin:0;">Virgínia e Zé Felipe</h3>
-                        <p style="font-size:13px; color:#888; margin-top:10px;">Novos detalhes da segurança da mansão viralizam. "Bunker de luxo", dizem seguidores.</p>
-                    </div>
-                </div>
-                <div class="card-fofoca">
-                    <img src="https://p2.trrsf.com/image/fget/cf/1200/675/middle/images.terra.com/2023/11/13/1131976077-ney.jpg" style="width:100%; height:220px; object-fit:cover;">
-                    <div style="padding:20px;">
-                        <span class="hype-badge">PRIVATE</span>
-                        <h3 style="margin:0;">Neymar Jr: Bastidores</h3>
-                        <p style="font-size:13px; color:#888; margin-top:10px;">O craque foi visto em evento restrito. O sinal aponta para novos anúncios de carreira.</p>
-                    </div>
-                </div>`;
+            
+            this.renderizar(noticias, "Feed de Celebridades", "PRIVATE");
         },
 
-        // CHARTS - ONDAS DE CALOR
-        async abaCharts(genero = 'URBAN') {
+        renderizar(noticias, label, badgeDefault) {
+            const container = document.getElementById('app-content');
+            if(!noticias) {
+                container.innerHTML = `<p style="text-align:center; color:#555;">Sinal instável. Tente novamente em 60s.</p>`;
+                return;
+            }
+
+            container.innerHTML = `<span class="feed-label">${label}</span>`;
+            noticias.slice(0, 6).forEach(n => {
+                container.innerHTML += `
+                    <div class="card-fofoca" onclick="window.open('${n.link}', '_blank')">
+                        <span class="hype-badge">${n.badge || badgeDefault}</span>
+                        <img src="${IMG_PROXY + encodeURIComponent(n.img)}&w=600&fit=cover" style="width:100%; height:200px; object-fit:cover;">
+                        <div style="padding:20px;">
+                            <h3>${n.titulo}</h3>
+                            <p style="font-size:13px; color:var(--text-dim); margin-top:10px;">${n.desc}</p>
+                        </div>
+                    </div>`;
+            });
+        },
+
+        async abaCharts() {
             this.setTabActive('btn-charts');
             const container = document.getElementById('app-content');
-            const base = {
-                'URBAN': { tit: 'Trap & Funk', cor: '#00ff00', rank: 'MC IG - Novo Hit' },
-                'POP': { tit: 'Pop Brasil', cor: '#ff00ff', rank: 'Luísa Sonza - Tour' },
-                'SERTANEJO': { tit: 'Sertanejo', cor: '#ffcc00', rank: 'Ana Castela' },
-                'MPB': { tit: 'MPB / Alt', cor: '#00ccff', rank: 'Liniker' }
-            };
-            const s = base[genero];
             container.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                    <span class="feed-label">Charts Music</span>
-                    <select onchange="Soberano.abaCharts(this.value)" style="background:#111; color:#fff; border:1px solid #333; padding:5px; border-radius:10px; font-size:10px;">
-                        <option value="URBAN" ${genero==='URBAN'?'selected':''}>URBAN</option>
-                        <option value="POP" ${genero==='POP'?'selected':''}>POP</option>
-                        <option value="SERTANEJO" ${genero==='SERTANEJO'?'selected':''}>SERTANEJO</option>
-                        <option value="MPB" ${genero==='MPB'?'selected':''}>MPB</option>
-                    </select>
-                </div>
-                <div class="card-fofoca" style="padding:25px; border-top:4px solid ${s.cor};">
-                    <small style="color:${s.cor}; font-weight:900;">CALOR • ${s.tit.toUpperCase()}</small>
-                    <div style="display:flex; align-items:flex-end; height:70px; gap:8px; margin:20px 0;">
-                        <div style="flex:1; background:#1a1a1a; height:30%;"></div>
-                        <div style="flex:2; background:linear-gradient(to top, #000, ${s.cor}); height:95%; border-radius:4px;"></div>
-                        <div style="flex:1; background:#1a1a1a; height:50%;"></div>
+                <span class="feed-label">Métricas de Sucesso</span>
+                <div class="card-fofoca" style="padding:30px; border-top: 5px solid var(--gold);">
+                    <small style="color:var(--gold); font-weight:900;">ONDA DE CALOR • TOP GLOBAL</small>
+                    <div style="display:flex; align-items:flex-end; height:80px; gap:10px; margin:25px 0;">
+                        <div style="flex:1; background:#333; height:40%;"></div>
+                        <div style="flex:2; background:linear-gradient(to top, #000, var(--gold)); height:100%; border-radius:4px;"></div>
+                        <div style="flex:1; background:#333; height:60%;"></div>
                     </div>
-                    <h3 style="margin:0;">${s.rank}</h3>
-                    <p style="font-size:12px; color:#555; margin-top:10px;">DOMÍNIO ABSOLUTO NO SPOTIFY BR</p>
+                    <h3>Top Viral: Billboard & Spotify</h3>
+                    <p style="font-size:12px; color:var(--text-dim);">Sincronizado com os servidores mundiais.</p>
                 </div>`;
         }
     };
