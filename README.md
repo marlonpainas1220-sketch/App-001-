@@ -1,3 +1,3 @@
-## Repositório Limpo
+# App-001
 
-Este repositório foi limpo em 15 de janeiro de 2026 e está pronto para uso futuro.
+This is the README file for the App-001 project.
